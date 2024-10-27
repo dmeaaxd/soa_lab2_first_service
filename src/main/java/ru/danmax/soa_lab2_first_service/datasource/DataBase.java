@@ -51,5 +51,7 @@ public class DataBase {
         } catch (SQLException ignored) {}
     }
 
+    private static void checkAndCreateTables(){
 
+    }
 }

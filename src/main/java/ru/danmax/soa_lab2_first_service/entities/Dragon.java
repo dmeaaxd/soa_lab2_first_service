@@ -8,17 +8,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.danmax.soa_lab2_first_service.entities.enums.DragonCharacter;
 import ru.danmax.soa_lab2_first_service.entities.enums.DragonType;
+import ru.danmax.soa_lab2_first_service.entities.enums.Color;
 
-import java.awt.*;
 import java.time.LocalDateTime;
 
-@Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "dragons")
-public class Dragon {
+public class Dragon implements Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -49,5 +47,27 @@ public class Dragon {
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Person killer;
+
+    @Override
+    public String getTableName() {
+        return "dragons";
+    }
+
+    @Override
+    public String getSqlCreateTableScript() {
+        return String.format("""
+                CREATE TABLE %s (
+                    id INT PRIMARY KEY AUTO_INCREMENT,
+                    name VARCHAR(255) NOT NULL,
+                    creationDate timestamp NOT NULL,
+                    age INT NOT NULL,
+                    color %s NOT NULL,
+                    dragon_type %s NOT NULL,
+                    dragon_character %s NOT NULL,
+                    killer_id INT,
+                    FOREIGN KEY (killer_id) REFERENCES %s (id),
+                    CONSTRAINT dragon_chk_age CHECK (age > 0)
+                );""", getTableName(), Color.BLACK.getEnumName(), DragonType.AIR.getEnumName(), DragonCharacter.CHAOTIC.getEnumName(), new Person().getTableName());
+    }
 }
 

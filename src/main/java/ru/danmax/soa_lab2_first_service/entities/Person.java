@@ -7,13 +7,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "persons")
-public class Person {
+public class Person implements Entity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,4 +27,14 @@ public class Person {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(nullable = false)
     private Location location;
+
+    @Override
+    public String getTableName() {
+        return null;
+    }
+
+    @Override
+    public String getSqlCreateTableScript() {
+        return null;
+    }
 }
