@@ -6,13 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "locations")
-public class Location {
+public class Location implements Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,4 +27,21 @@ public class Location {
 
     @Column(nullable = false)
     private String name;
+
+    @Override
+    public String getTableName() {
+        return "locations";
+    }
+
+    @Override
+    public String getSqlCreateTableScript() {
+        return String.format("""
+                CREATE TABLE %s (
+                    id INT PRIMARY KEY AUTO_INCREMENT,
+                    x INT NOT NULL,
+                    y INT NOT NULL,
+                    z INT NOT NULL,
+                    name VARCHAR(255) NOT NULL
+                );""", getTableName());
+    }
 }

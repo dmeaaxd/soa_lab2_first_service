@@ -12,15 +12,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "coordinates")
-public class Coordinates {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Coordinates implements Entity{
     private Long id;
-
-    @Max(511)
-    @Column(nullable = false)
     private int x;
-
-    @Column(nullable = false)
     private int y;
+
+    @Override
+    public String getTableName() {
+        return "coordinates";
+    }
+
+    @Override
+    public String getSqlCreateTableScript() {
+        return String.format("""
+                CREATE TABLE %s (
+                    id INT PRIMARY KEY AUTO_INCREMENT,
+                    x INT NOT NULL,
+                    y INT NOT NULL
+                );""", getTableName());
+    }
 }
