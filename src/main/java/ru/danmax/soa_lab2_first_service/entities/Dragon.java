@@ -59,7 +59,7 @@ public class Dragon implements Entity {
                 CREATE TABLE %s (
                     id INT PRIMARY KEY AUTO_INCREMENT,
                     name VARCHAR(255) NOT NULL,
-                    creationDate timestamp NOT NULL,
+                    creation_date timestamp NOT NULL,
                     age INT NOT NULL,
                     color %s NOT NULL,
                     dragon_type %s NOT NULL,
