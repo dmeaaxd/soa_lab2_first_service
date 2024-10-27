@@ -24,7 +24,7 @@ public class Person implements Entity{
     public String getSqlCreateTableScript() {
         return String.format("""
                 CREATE TABLE %s (
-                    id INT PRIMARY KEY AUTO_INCREMENT,
+                    id SERIAL PRIMARY KEY,
                     name VARCHAR(255) NOT NULL,
                     passport_id INT NOT NULL,
                     location_id INT NOT NULL,

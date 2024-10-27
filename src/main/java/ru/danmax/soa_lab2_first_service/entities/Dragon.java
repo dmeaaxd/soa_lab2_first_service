@@ -36,7 +36,7 @@ public class Dragon implements Entity {
     public String getSqlCreateTableScript() {
         return String.format("""
                 CREATE TABLE %s (
-                    id INT PRIMARY KEY AUTO_INCREMENT,
+                    id SERIAL PRIMARY KEY,
                     name VARCHAR(255) NOT NULL,
                     coordinates_id INT NOT NULL,
                     creation_date timestamp NOT NULL,
