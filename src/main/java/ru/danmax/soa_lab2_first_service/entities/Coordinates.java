@@ -1,7 +1,5 @@
 package ru.danmax.soa_lab2_first_service.entities;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

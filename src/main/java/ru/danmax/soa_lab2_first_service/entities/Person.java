@@ -1,14 +1,9 @@
 package ru.danmax.soa_lab2_first_service.entities;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.danmax.soa_lab2_first_service.entities.enums.Color;
-import ru.danmax.soa_lab2_first_service.entities.enums.DragonCharacter;
-import ru.danmax.soa_lab2_first_service.entities.enums.DragonType;
 
 @Data
 @Builder
