@@ -18,7 +18,7 @@
         <payara.url>https://repo1.maven.org/maven2/fish/payara/distributions/payara/6.2024.10/payara-6.2024.10.zip</payara.url>
         <payara.home>payara6</payara.home>
     </properties>
-    
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -28,33 +28,28 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.18.34</version>
                 <scope>provided</scope>
             </dependency>
-
             <dependency>
                 <groupId>org.eclipse.persistence</groupId>
                 <artifactId>org.eclipse.persistence.jpa</artifactId>
             </dependency>
-
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
             </dependency>
         </dependencies>
-
-
     </dependencyManagement>
 
     <dependencies>
         <dependency>
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-api</artifactId>
-                    <scope>provided</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.eclipse.microprofile</groupId>
@@ -71,6 +66,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+
     </dependencies>
 
     <build>
