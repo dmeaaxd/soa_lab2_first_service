@@ -1,4 +1,4 @@
-package ru.danmax.soa_lab2_first_service.entity;
+package ru.danmax.soa_lab2_first_service.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

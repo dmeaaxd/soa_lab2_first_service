@@ -1,7 +1,7 @@
-package ru.danmax.soa_lab2_first_service.entity;
+package ru.danmax.soa_lab2_first_service.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,16 +12,20 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "coordinates")
-public class Coordinates {
+@Table(name = "persons")
+public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Max(511)
     @Column(nullable = false)
-    private int x;
+    private String name;
 
+    @Size(min = 10, max = 32)
     @Column(nullable = false)
-    private int y;
+    private String passportId;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(nullable = false)
+    private Location location;
 }

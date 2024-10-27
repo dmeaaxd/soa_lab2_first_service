@@ -1,4 +1,4 @@
-package ru.danmax.soa_lab2_first_service.entity;
+package ru.danmax.soa_lab2_first_service.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
@@ -6,8 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.danmax.soa_lab2_first_service.entity.enums.DragonCharacter;
-import ru.danmax.soa_lab2_first_service.entity.enums.DragonType;
+import ru.danmax.soa_lab2_first_service.entities.enums.DragonCharacter;
+import ru.danmax.soa_lab2_first_service.entities.enums.DragonType;
 
 import java.awt.*;
 import java.time.LocalDateTime;
