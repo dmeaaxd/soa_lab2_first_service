@@ -19,35 +19,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Dragon implements Entity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
     private String name;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(nullable = false)
     private Coordinates coordinates;
-
-    @Column(nullable = false)
     private LocalDateTime creationDate;
-
-    @Positive
     private int age;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Color color;
-
-    @Enumerated(EnumType.STRING)
     private DragonType dragonType;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private DragonCharacter character;
-
-    @ManyToOne(cascade = CascadeType.ALL)
     private Person killer;
 
     @Override
