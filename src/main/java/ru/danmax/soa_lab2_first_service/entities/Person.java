@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.danmax.soa_lab2_first_service.entities.enums.Color;
+import ru.danmax.soa_lab2_first_service.entities.enums.DragonCharacter;
+import ru.danmax.soa_lab2_first_service.entities.enums.DragonType;
 
 @Data
 @Builder
@@ -30,11 +33,19 @@ public class Person implements Entity{
 
     @Override
     public String getTableName() {
-        return null;
+        return "persons";
     }
 
     @Override
     public String getSqlCreateTableScript() {
-        return null;
+        return String.format("""
+                CREATE TABLE %s (
+                    id INT PRIMARY KEY AUTO_INCREMENT,
+                    name VARCHAR(255) NOT NULL,
+                    passport_id INT NOT NULL,
+                    location_id INT NOT NULL,
+                    FOREIGN KEY (location_id) REFERENCES %s (id) ON DELETE CASCADE,
+                    CONSTRAINT person_chk_passport CHECK (passport_id > 9 AND passport_id < 33)
+                );""", getTableName(), new Location().getTableName());
     }
 }
