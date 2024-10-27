@@ -35,6 +35,12 @@
                 <version>1.18.34</version>
                 <scope>provided</scope>
             </dependency>
+
+            <dependency>
+                <groupId>jakarta.persistence</groupId>
+                <artifactId>persistence-api</artifactId>
+                <scope>provided</scope>
+            </dependency>
         </dependencies>
 
 
