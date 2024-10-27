@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static ru.danmax.soa_lab2_first_service.datasource.repositories.additional.AdditionalMethods.*;
+import static ru.danmax.soa_lab2_first_service.entities.Dragon.createDragonFromResultSet;
 
 public class DragonRepository {
 
@@ -39,15 +40,7 @@ public class DragonRepository {
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Dragon dragon = Dragon.builder()
-                        .id(rs.getLong("id"))
-                        .name(rs.getString("name"))
-                        .creationDate(rs.getTimestamp("creation_date").toLocalDateTime())
-                        .age(rs.getInt("age"))
-                        .color(Color.valueOf(rs.getString("color").trim()))
-                        .dragonType(DragonType.valueOf(rs.getString("dragon_type").trim()))
-                        .character(DragonCharacter.valueOf(rs.getString("character").trim()))
-                        .build();
+                Dragon dragon = createDragonFromResultSet(rs);
                 dragons.add(dragon);
             }
         } catch (SQLException e) {

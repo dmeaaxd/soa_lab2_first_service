@@ -10,6 +10,8 @@ import ru.danmax.soa_lab2_first_service.entities.enums.DragonCharacter;
 import ru.danmax.soa_lab2_first_service.entities.enums.DragonType;
 import ru.danmax.soa_lab2_first_service.entities.enums.Color;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 @Data
@@ -70,6 +72,18 @@ public class Dragon implements Entity {
                     FOREIGN KEY (killer_id) REFERENCES %s (id),
                     CONSTRAINT dragon_chk_age CHECK (age > 0)
                 );""", getTableName(), Color.BLACK.getEnumName(), DragonType.AIR.getEnumName(), DragonCharacter.CHAOTIC.getEnumName(), new Coordinates().getTableName(), new Person().getTableName());
+    }
+
+    public static Dragon createDragonFromResultSet(ResultSet rs) throws SQLException {
+        return Dragon.builder()
+                .id(rs.getLong("id"))
+                .name(rs.getString("name"))
+                .creationDate(rs.getTimestamp("creation_date").toLocalDateTime())
+                .age(rs.getInt("age"))
+                .color(Color.valueOf(rs.getString("dragon_type").trim()))
+                .dragonType(DragonType.valueOf(rs.getString("dragon_type").trim()))
+                .character(DragonCharacter.valueOf(rs.getString("character").trim()))
+                .build();
     }
 }
 
