@@ -59,15 +59,17 @@ public class Dragon implements Entity {
                 CREATE TABLE %s (
                     id INT PRIMARY KEY AUTO_INCREMENT,
                     name VARCHAR(255) NOT NULL,
+                    coordinates_id INT NOT NULL,
                     creation_date timestamp NOT NULL,
                     age INT NOT NULL,
                     color %s NOT NULL,
                     dragon_type %s NOT NULL,
                     character %s NOT NULL,
                     killer_id INT,
+                    FOREIGN KEY (coordinates_id) REFERENCES %s (id),
                     FOREIGN KEY (killer_id) REFERENCES %s (id),
                     CONSTRAINT dragon_chk_age CHECK (age > 0)
-                );""", getTableName(), Color.BLACK.getEnumName(), DragonType.AIR.getEnumName(), DragonCharacter.CHAOTIC.getEnumName(), new Person().getTableName());
+                );""", getTableName(), Color.BLACK.getEnumName(), DragonType.AIR.getEnumName(), DragonCharacter.CHAOTIC.getEnumName(), new Coordinates().getTableName(), new Person().getTableName());
     }
 }
 
