@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "locations")
 public class Location implements Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

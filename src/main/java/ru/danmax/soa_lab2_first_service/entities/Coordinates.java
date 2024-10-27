@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "coordinates")
 public class Coordinates implements Entity{
     private Long id;
     private int x;
