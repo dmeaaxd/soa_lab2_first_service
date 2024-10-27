@@ -35,10 +35,6 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.eclipse.persistence</groupId>
-                <artifactId>org.eclipse.persistence.jpa</artifactId>
-            </dependency>
-            <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
             </dependency>
@@ -66,7 +62,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-
     </dependencies>
 
     <build>
