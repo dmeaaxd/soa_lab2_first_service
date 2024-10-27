@@ -1,4 +1,4 @@
-package ru.danmax.hello;
+package ru.danmax.soa_lab2_first_service;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
