@@ -37,9 +37,13 @@
             </dependency>
 
             <dependency>
-                <groupId>jakarta.persistence</groupId>
-                <artifactId>persistence-api</artifactId>
-                <scope>provided</scope>
+                <groupId>org.eclipse.persistence</groupId>
+                <artifactId>org.eclipse.persistence.jpa</artifactId>
+            </dependency>
+
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
             </dependency>
         </dependencies>
 
