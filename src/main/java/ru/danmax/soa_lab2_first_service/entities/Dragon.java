@@ -63,7 +63,7 @@ public class Dragon implements Entity {
                     age INT NOT NULL,
                     color %s NOT NULL,
                     dragon_type %s NOT NULL,
-                    dragon_character %s NOT NULL,
+                    character %s NOT NULL,
                     killer_id INT,
                     FOREIGN KEY (killer_id) REFERENCES %s (id),
                     CONSTRAINT dragon_chk_age CHECK (age > 0)
