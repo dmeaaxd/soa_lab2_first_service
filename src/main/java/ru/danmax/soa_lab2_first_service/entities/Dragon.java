@@ -68,8 +68,8 @@ public class Dragon implements Entity {
                     dragon_type %s NOT NULL,
                     character %s NOT NULL,
                     killer_id INT,
-                    FOREIGN KEY (coordinates_id) REFERENCES %s (id),
-                    FOREIGN KEY (killer_id) REFERENCES %s (id),
+                    FOREIGN KEY (coordinates_id) REFERENCES %s (id) ON DELETE CASCADE,
+                    FOREIGN KEY (killer_id) REFERENCES %s (id) ON DELETE RESTRICT,
                     CONSTRAINT dragon_chk_age CHECK (age > 0)
                 );""", getTableName(), Color.BLACK.getEnumName(), DragonType.AIR.getEnumName(), DragonCharacter.CHAOTIC.getEnumName(), new Coordinates().getTableName(), new Person().getTableName());
     }
