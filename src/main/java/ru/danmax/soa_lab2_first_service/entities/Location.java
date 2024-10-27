@@ -36,7 +36,7 @@ public class Location implements Entity {
     public String getSqlCreateTableScript() {
         return String.format("""
                 CREATE TABLE %s (
-                    id INT PRIMARY KEY AUTO_INCREMENT,
+                    id SERIAL PRIMARY KEY,
                     x INT NOT NULL,
                     y INT NOT NULL,
                     z INT NOT NULL,
