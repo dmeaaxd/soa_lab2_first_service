@@ -16,9 +16,11 @@ public class RestConfiguration extends Application {
     private Set<Object> singletons = new HashSet<Object>();
     private Set<Class<?>> empty = new HashSet<Class<?>>();
 
-    public RestConfiguration() throws SQLException {
+    public RestConfiguration(){
         singletons.add(new HelloWorldResource());
-        DataBase.checkAndCreateTables();
+        try {
+            DataBase.checkAndCreateTables();
+        } catch (SQLException ignored){};
     }
 
     @Override
