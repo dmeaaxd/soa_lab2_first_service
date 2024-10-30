@@ -14,9 +14,9 @@ import java.sql.SQLException;
 
 public class DataBase {
     //  Database credentials
-    static final String URL = "jdbc:postgresql://147.45.190.117:5432/soa_DANMAX";
-    static final String USERNAME = "danmax";
-    static final String PASSWORD = "soaLabs2024";
+    static final String URL = "";
+    static final String USERNAME = "";
+    static final String PASSWORD = "";
 
     private static Connection connection = null;
 
