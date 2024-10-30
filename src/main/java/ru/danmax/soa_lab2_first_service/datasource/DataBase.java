@@ -1,13 +1,5 @@
 package ru.danmax.soa_lab2_first_service.datasource;
 
-import ru.danmax.soa_lab2_first_service.entities.Coordinates;
-import ru.danmax.soa_lab2_first_service.entities.Dragon;
-import ru.danmax.soa_lab2_first_service.entities.Location;
-import ru.danmax.soa_lab2_first_service.entities.Person;
-import ru.danmax.soa_lab2_first_service.entities.enums.Color;
-import ru.danmax.soa_lab2_first_service.entities.enums.DragonCharacter;
-import ru.danmax.soa_lab2_first_service.entities.enums.DragonType;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -59,28 +51,28 @@ public class DataBase {
         } catch (SQLException ignored) {}
     }
 
-    public static void checkAndCreateTables() throws SQLException {
-        getConnection();
-
-        // Создаем enum-ы
-        createRelation(Color.BLACK.getSqlCreateScript());
-        createRelation(DragonCharacter.FICKLE.getSqlCreateScript());
-        createRelation(DragonType.WATER.getSqlCreateScript());
-
-        // Создаем таблицы
-        createRelation(new Coordinates().getSqlCreateTableScript());
-        createRelation(new Location().getSqlCreateTableScript());
-        createRelation(new Person().getSqlCreateTableScript());
-        createRelation(new Dragon().getSqlCreateTableScript());
-    }
-
-    private static void createRelation(String sql) throws SQLException {
-        try {
-            connection.createStatement().execute(sql);
-        } catch (SQLException alreadyExist) {
-            System.out.println(alreadyExist.getMessage());
-            System.out.println(alreadyExist.getSQLState());
-            System.out.println(alreadyExist.getErrorCode());
-        }
-    }
+//    public static void checkAndCreateTables() throws SQLException {
+//        getConnection();
+//
+//        // Создаем enum-ы
+//        createRelation(Color.BLACK.getSqlCreateScript());
+//        createRelation(DragonCharacter.FICKLE.getSqlCreateScript());
+//        createRelation(DragonType.WATER.getSqlCreateScript());
+//
+//        // Создаем таблицы
+//        createRelation(new Coordinates().getSqlCreateTableScript());
+//        createRelation(new Location().getSqlCreateTableScript());
+//        createRelation(new Person().getSqlCreateTableScript());
+//        createRelation(new Dragon().getSqlCreateTableScript());
+//    }
+//
+//    private static void createRelation(String sql) throws SQLException {
+//        try {
+//            connection.createStatement().execute(sql);
+//        } catch (SQLException alreadyExist) {
+//            System.out.println(alreadyExist.getMessage());
+//            System.out.println(alreadyExist.getSQLState());
+//            System.out.println(alreadyExist.getErrorCode());
+//        }
+//    }
 }

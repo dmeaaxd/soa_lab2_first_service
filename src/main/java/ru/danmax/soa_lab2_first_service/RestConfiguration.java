@@ -18,9 +18,6 @@ public class RestConfiguration extends Application {
 
     public RestConfiguration(){
         singletons.add(new HelloWorldResource());
-        try {
-            DataBase.checkAndCreateTables();
-        } catch (SQLException ignored){};
     }
 
     @Override
