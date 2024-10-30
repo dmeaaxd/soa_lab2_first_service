@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -27,5 +30,13 @@ public class Coordinates implements Entity{
                     x INT NOT NULL,
                     y INT NOT NULL
                 );""", getTableName());
+    }
+
+    public static Coordinates createCoordinatesFromResultSet(ResultSet rs) throws SQLException {
+        return Coordinates.builder()
+                .id(rs.getLong("id"))
+                .x(rs.getInt("x"))
+                .y(rs.getInt("y"))
+                .build();
     }
 }

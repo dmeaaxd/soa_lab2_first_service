@@ -39,7 +39,7 @@ public class Dragon implements Entity {
                     id SERIAL PRIMARY KEY,
                     name VARCHAR(255) NOT NULL,
                     coordinates_id INT NOT NULL,
-                    creation_date timestamp NOT NULL,
+                    creation_date timestamp NOT NULL default CURRENT_TIMESTAMP,
                     age INT NOT NULL,
                     color %s NOT NULL,
                     dragon_type %s NOT NULL,
@@ -51,13 +51,13 @@ public class Dragon implements Entity {
                 );""", getTableName(), Color.BLACK.getEnumName(), DragonType.AIR.getEnumName(), DragonCharacter.CHAOTIC.getEnumName(), new Coordinates().getTableName(), new Person().getTableName());
     }
 
-    public static Dragon createDragonFromResultSet(ResultSet rs) throws SQLException {
+    public static Dragon createRawDragonFromResultSet(ResultSet rs) throws SQLException {
         return Dragon.builder()
                 .id(rs.getLong("id"))
                 .name(rs.getString("name"))
                 .creationDate(rs.getTimestamp("creation_date").toLocalDateTime())
                 .age(rs.getInt("age"))
-                .color(Color.valueOf(rs.getString("dragon_type").trim()))
+                .color(Color.valueOf(rs.getString("color").trim()))
                 .dragonType(DragonType.valueOf(rs.getString("dragon_type").trim()))
                 .character(DragonCharacter.valueOf(rs.getString("character").trim()))
                 .build();

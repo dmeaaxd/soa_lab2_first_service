@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -31,5 +34,13 @@ public class Person implements Entity{
                     FOREIGN KEY (location_id) REFERENCES %s (id) ON DELETE CASCADE,
                     CONSTRAINT person_chk_passport CHECK (char_length(passport_id) > 9 AND char_length(passport_id) < 33)
                 );""", getTableName(), new Location().getTableName());
+    }
+
+    public static Person createRawPersonFromResultSet(ResultSet rs) throws SQLException {
+        return Person.builder()
+                .id(rs.getLong("id"))
+                .name(rs.getString("name"))
+                .passportId(rs.getString("passport_id"))
+                .build();
     }
 }
