@@ -2,7 +2,9 @@ package ru.danmax.soa_lab2_first_service;
 
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
+import ru.danmax.soa_lab2_first_service.datasource.DataBase;
 
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,8 +16,9 @@ public class RestConfiguration extends Application {
     private Set<Object> singletons = new HashSet<Object>();
     private Set<Class<?>> empty = new HashSet<Class<?>>();
 
-    public RestConfiguration() {
+    public RestConfiguration() throws SQLException {
         singletons.add(new HelloWorldResource());
+        DataBase.checkAndCreateTables();
     }
 
     @Override

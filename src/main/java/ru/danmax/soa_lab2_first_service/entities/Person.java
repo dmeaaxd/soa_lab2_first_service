@@ -26,10 +26,10 @@ public class Person implements Entity{
                 CREATE TABLE %s (
                     id SERIAL PRIMARY KEY,
                     name VARCHAR(255) NOT NULL,
-                    passport_id INT NOT NULL,
+                    passport_id VARCHAR(32) NOT NULL,
                     location_id INT NOT NULL,
                     FOREIGN KEY (location_id) REFERENCES %s (id) ON DELETE CASCADE,
-                    CONSTRAINT person_chk_passport CHECK (passport_id > 9 AND passport_id < 33)
+                    CONSTRAINT person_chk_passport CHECK (char_length(passport_id) > 9 AND char_length(passport_id) < 33)
                 );""", getTableName(), new Location().getTableName());
     }
 }
