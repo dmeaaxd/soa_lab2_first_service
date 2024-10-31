@@ -13,32 +13,19 @@ import java.sql.SQLException;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Person implements Entity{
-    private Long id;
-    private String name;
-    private String passportId;
-    private Location location;
+    private int id;
+    private String name; //Поле не может быть null, Строка не может быть пустой
+    private String passportId; //Длина строки должна быть не меньше 10, Длина строки не должна быть больше 32, Поле может быть null
+    private Location location; //Поле не может быть null
 
     @Override
     public String getTableName() {
         return "persons";
     }
 
-    @Override
-    public String getSqlCreateTableScript() {
-        return String.format("""
-                CREATE TABLE %s (
-                    id SERIAL PRIMARY KEY,
-                    name VARCHAR(255) NOT NULL,
-                    passport_id VARCHAR(32) NOT NULL,
-                    location_id INT NOT NULL,
-                    FOREIGN KEY (location_id) REFERENCES %s (id) ON DELETE CASCADE,
-                    CONSTRAINT person_chk_passport CHECK (char_length(passport_id) > 9 AND char_length(passport_id) < 33)
-                );""", getTableName(), new Location().getTableName());
-    }
-
     public static Person createRawPersonFromResultSet(ResultSet rs) throws SQLException {
         return Person.builder()
-                .id(rs.getLong("id"))
+                .id(rs.getInt("id"))
                 .name(rs.getString("name"))
                 .passportId(rs.getString("passport_id"))
                 .build();

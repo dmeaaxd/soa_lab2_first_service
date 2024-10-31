@@ -17,43 +17,24 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Dragon implements Entity {
-    private Long id;
-    private String name;
-    private Coordinates coordinates;
-    private LocalDateTime creationDate;
-    private int age;
-    private Color color;
-    private DragonType dragonType;
-    private DragonCharacter character;
-    private Person killer;
+    private int id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+    private String name; //Поле не может быть null, Строка не может быть пустой
+    private Coordinates coordinates; //Поле не может быть null
+    private LocalDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
+    private int age; //Значение поля должно быть больше 0, Поле не может быть null
+    private Color color; //Поле может быть null
+    private DragonType dragonType; //Поле может быть null
+    private DragonCharacter character; //Поле может быть null
+    private Person killer; //Поле может быть null
 
     @Override
     public String getTableName() {
         return "dragons";
     }
 
-    @Override
-    public String getSqlCreateTableScript() {
-        return String.format("""
-                CREATE TABLE %s (
-                    id SERIAL PRIMARY KEY,
-                    name VARCHAR(255) NOT NULL,
-                    coordinates_id INT NOT NULL,
-                    creation_date timestamp NOT NULL default CURRENT_TIMESTAMP,
-                    age INT NOT NULL,
-                    color %s NOT NULL,
-                    dragon_type %s NOT NULL,
-                    character %s NOT NULL,
-                    killer_id INT,
-                    FOREIGN KEY (coordinates_id) REFERENCES %s (id) ON DELETE CASCADE,
-                    FOREIGN KEY (killer_id) REFERENCES %s (id) ON DELETE RESTRICT,
-                    CONSTRAINT dragon_chk_age CHECK (age > 0)
-                );""", getTableName(), Color.BLACK.getEnumName(), DragonType.AIR.getEnumName(), DragonCharacter.CHAOTIC.getEnumName(), new Coordinates().getTableName(), new Person().getTableName());
-    }
-
     public static Dragon createRawDragonFromResultSet(ResultSet rs) throws SQLException {
         return Dragon.builder()
-                .id(rs.getLong("id"))
+                .id(rs.getInt("id"))
                 .name(rs.getString("name"))
                 .creationDate(rs.getTimestamp("creation_date").toLocalDateTime())
                 .age(rs.getInt("age"))

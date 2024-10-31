@@ -10,9 +10,4 @@ public enum Color implements EnumEntity{
     public String getEnumName() {
         return "Color";
     }
-
-    @Override
-    public String getSqlCreateScript() {
-        return String.format("CREATE TYPE %s AS ENUM ('BLACK', 'ORANGE', 'WHITE', 'BROWN');", getEnumName());
-    }
 }

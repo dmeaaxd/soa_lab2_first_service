@@ -10,9 +10,4 @@ public enum DragonType implements EnumEntity{
     public String getEnumName() {
         return "DragonType";
     }
-
-    @Override
-    public String getSqlCreateScript() {
-        return String.format("CREATE TYPE %s AS ENUM ('WATER', 'UNDERGROUND', 'AIR', 'FIRE');", getEnumName());
-    }
 }

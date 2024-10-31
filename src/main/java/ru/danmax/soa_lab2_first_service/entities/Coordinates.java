@@ -13,30 +13,20 @@ import java.sql.SQLException;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Coordinates implements Entity{
-    private Long id;
-    private int x;
-    private int y;
+    private int id;
+    private int x; //Поле не может быть null
+    private float y;
 
     @Override
     public String getTableName() {
         return "coordinates";
     }
 
-    @Override
-    public String getSqlCreateTableScript() {
-        return String.format("""
-                CREATE TABLE %s (
-                    id SERIAL PRIMARY KEY,
-                    x INT NOT NULL,
-                    y INT NOT NULL
-                );""", getTableName());
-    }
-
     public static Coordinates createCoordinatesFromResultSet(ResultSet rs) throws SQLException {
         return Coordinates.builder()
-                .id(rs.getLong("id"))
+                .id(rs.getInt("id"))
                 .x(rs.getInt("x"))
-                .y(rs.getInt("y"))
+                .y(rs.getFloat("y"))
                 .build();
     }
 }

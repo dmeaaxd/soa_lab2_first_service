@@ -13,35 +13,23 @@ import java.sql.SQLException;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Location implements Entity {
-    private Long id;
-    private int x;
-    private double y;
-    private int z;
-    private String name;
+    private int id;
+    private float x;
+    private float y; //Поле не может быть null
+    private float z;
+    private String name; //Строка не может быть пустой, Поле не может быть null
 
     @Override
     public String getTableName() {
         return "locations";
     }
 
-    @Override
-    public String getSqlCreateTableScript() {
-        return String.format("""
-                CREATE TABLE %s (
-                    id SERIAL PRIMARY KEY,
-                    x INT NOT NULL,
-                    y INT NOT NULL,
-                    z INT NOT NULL,
-                    name VARCHAR(255) NOT NULL
-                );""", getTableName());
-    }
-
     public static Location createLocationFromResultSet(ResultSet rs) throws SQLException {
         return Location.builder()
-                .id(rs.getLong("id"))
-                .x(rs.getInt("x"))
-                .y(rs.getInt("y"))
-                .z(rs.getInt("z"))
+                .id(rs.getInt("id"))
+                .x(rs.getFloat("x"))
+                .y(rs.getFloat("y"))
+                .z(rs.getFloat("z"))
                 .name(rs.getString("name"))
                 .build();
     }

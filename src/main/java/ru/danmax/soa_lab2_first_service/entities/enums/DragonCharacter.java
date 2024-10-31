@@ -11,9 +11,4 @@ public enum DragonCharacter implements EnumEntity{
     public String getEnumName() {
         return "DragonCharacter";
     }
-
-    @Override
-    public String getSqlCreateScript() {
-        return String.format("CREATE TYPE %s AS ENUM ('CUNNING', 'WISE', 'CHAOTIC', 'CHAOTIC_EVIL', 'FICKLE');", getEnumName());
-    }
 }
