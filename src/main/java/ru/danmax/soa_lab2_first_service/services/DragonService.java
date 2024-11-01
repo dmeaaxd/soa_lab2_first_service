@@ -15,7 +15,7 @@ import java.util.List;
 public class DragonService {
 
 
-    public List<Dragon> getDragons(String sort, String filter, Integer page, Integer size) throws SQLException {
+    public static List<Dragon> getDragons(String sort, String filter, Integer page, Integer size) throws SQLException {
         return DragonRepository.findAll(sort, filter);
     }
 
