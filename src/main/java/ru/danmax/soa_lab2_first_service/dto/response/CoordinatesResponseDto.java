@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.danmax.soa_lab2_first_service.entities.Coordinates;
 
 @Data
 @Builder
@@ -12,4 +13,11 @@ import lombok.NoArgsConstructor;
 public class CoordinatesResponseDto {
     private int x;
     private float y;
+
+    public static CoordinatesResponseDto convertToDTO(Coordinates coordinates) {
+        return CoordinatesResponseDto.builder()
+                .x(coordinates.getX())
+                .y(coordinates.getY())
+                .build();
+    }
 }

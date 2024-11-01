@@ -2,9 +2,11 @@ package ru.danmax.soa_lab2_first_service.services;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import ru.danmax.soa_lab2_first_service.datasource.repositories.DragonRepository;
 import ru.danmax.soa_lab2_first_service.entities.Dragon;
 import ru.danmax.soa_lab2_first_service.entities.enums.DragonCharacter;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +15,8 @@ import java.util.List;
 public class DragonService {
 
 
-    public List<Dragon> getDragons(String sort, String filter, Integer page, Integer size) {
-        return null;
+    public List<Dragon> getDragons(String sort, String filter, Integer page, Integer size) throws SQLException {
+        return DragonRepository.findAll(sort, filter);
     }
 
 

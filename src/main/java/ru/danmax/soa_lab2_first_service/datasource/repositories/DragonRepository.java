@@ -12,35 +12,29 @@ import static ru.danmax.soa_lab2_first_service.datasource.repositories.additiona
 
 public class DragonRepository {
 
-    public static List<Dragon> findAll(String sort, String filter) {
-        List<Dragon> dragons = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT * FROM dragons");
-
+    public static List<Dragon> findAll(String sort, String filter) throws SQLException {
+        Connection conn = DataBase.getConnection();
+        String sql = String.format("SELECT * FROM %s", new Dragon().getTableName());
 
         if (filter != null && !filter.isEmpty()) {
-            sql.append(" WHERE ").append(parseFilter(filter));
+            sql += " WHERE " + parseFilter(filter);
         }
 
         if (sort != null && !sort.isEmpty()) {
-            sql.append(" ORDER BY ").append(parseSort(sort));
+            sql += " ORDER BY " + parseSort(sort);
+        }
+        sql += ";";
+
+        ResultSet rs = conn.createStatement().executeQuery(sql);
+
+        List<Dragon> dragons = new ArrayList<>();
+        while (rs.next()) {
+            Dragon dragon = createDragonFromResultSet(rs);
+            if (dragon != null) {
+                dragons.add(dragon);
+            }
         }
 
-        try (Connection conn = DataBase.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
-
-            if (filter != null && !filter.isEmpty()) {
-                setFilterParameters(stmt, filter);
-            }
-
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                Dragon dragon = createDragonFromResultSet(rs);
-                if (dragon != null) {
-                    dragons.add(dragon);
-                }
-            }
-        } catch (SQLException ignored) {
-        }
         return dragons;
     }
 
@@ -51,9 +45,9 @@ public class DragonRepository {
         try {
             ResultSet rs = connection.createStatement().executeQuery(
                     String.format("""
-                                select * from dragons
+                                select * from %s
                                 where dragons.id = %d;
-                            """, id)
+                            """, new Dragon().getTableName(), id)
             );
             dragon = (rs.next()) ? createDragonFromResultSet(rs) : null;
         } catch (SQLException ignored) {}
