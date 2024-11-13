@@ -7,6 +7,6 @@ import java.sql.SQLException;
 public class Test {
     public static void main(String[] args) throws SQLException {
         String filters = "(id eq 10) and (name eq Dragon)";
-        System.out.println(DragonRepository.findAll(null, filters));
+        System.out.println(DragonRepository.findAll(null, null));
     }
 }

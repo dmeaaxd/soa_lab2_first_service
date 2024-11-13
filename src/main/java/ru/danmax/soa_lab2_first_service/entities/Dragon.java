@@ -33,14 +33,18 @@ public class Dragon implements Entity {
     }
 
     public static Dragon createRawDragonFromResultSet(ResultSet rs) throws SQLException {
+        String colorString = rs.getString("color");
+        String dragonTypeString = rs.getString("dragon_type");
+        String dragonCharacterString = rs.getString("character");
+
         return Dragon.builder()
                 .id(rs.getInt("id"))
                 .name(rs.getString("name"))
                 .creationDate(rs.getTimestamp("creation_date").toLocalDateTime())
                 .age(rs.getInt("age"))
-                .color(Color.valueOf(rs.getString("color").trim()))
-                .dragonType(DragonType.valueOf(rs.getString("dragon_type").trim()))
-                .character(DragonCharacter.valueOf(rs.getString("character").trim()))
+                .color(colorString != null ? Color.valueOf(colorString.trim()) : null)
+                .dragonType(dragonTypeString != null ? DragonType.valueOf(dragonTypeString.trim()) : null)
+                .character(dragonCharacterString != null ? DragonCharacter.valueOf(dragonCharacterString.trim()) : null)
                 .build();
     }
 }
