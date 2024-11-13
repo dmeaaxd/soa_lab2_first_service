@@ -15,6 +15,7 @@ public class CoordinatesResponseDto {
     private float y;
 
     public static CoordinatesResponseDto convertToDTO(Coordinates coordinates) {
+        if (coordinates == null) return null;
         return CoordinatesResponseDto.builder()
                 .x(coordinates.getX())
                 .y(coordinates.getY())

@@ -25,6 +25,7 @@ public class DragonResponseDto {
     private PersonResponseDto killer;
 
     public static DragonResponseDto convertToDTO(Dragon dragon) {
+        if (dragon == null) return null;
         return DragonResponseDto.builder()
                 .id(dragon.getId())
                 .name(dragon.getName())

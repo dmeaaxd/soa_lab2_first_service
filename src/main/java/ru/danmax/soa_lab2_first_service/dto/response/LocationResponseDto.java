@@ -17,6 +17,7 @@ public class LocationResponseDto {
     private String name;
 
     public static LocationResponseDto convertToDTO(Location location) {
+        if (location == null) return null;
         return LocationResponseDto.builder()
                 .x(location.getX())
                 .y(location.getY())

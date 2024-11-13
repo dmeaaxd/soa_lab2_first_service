@@ -18,6 +18,7 @@ public class PersonResponseDto {
     private LocationResponseDto location;
 
     public static PersonResponseDto convertToDTO(Person person) {
+        if (person == null) return null;
         return PersonResponseDto.builder()
                 .id(person.getId())
                 .name(person.getName())
