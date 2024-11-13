@@ -61,11 +61,11 @@ public class DragonRepository {
             dragon = Dragon.createRawDragonFromResultSet(rs);
 
             if (dragon != null && rs.getObject("coordinates_id") != null) {
-                dragon.setCoordinates(CoordinatesRepository.findById(rs.getLong("coordinates_id")));
+                dragon.setCoordinates(CoordinatesRepository.findById(rs.getInt("coordinates_id")));
             }
 
             if (dragon != null && rs.getObject("killer_id") != null) {
-                dragon.setKiller(PersonRepository.findById(rs.getLong("killer_id")));
+                dragon.setKiller(PersonRepository.findById(rs.getInt("killer_id")));
             }
         } catch (SQLException ignored) {}
 

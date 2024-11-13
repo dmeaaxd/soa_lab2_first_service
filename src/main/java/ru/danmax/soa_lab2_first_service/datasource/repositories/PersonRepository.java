@@ -21,7 +21,7 @@ public class PersonRepository {
             );
             person = (rs.next()) ? Person.createRawPersonFromResultSet(rs) : null;
             if (person != null && rs.getObject("location_id") != null){
-                person.setLocation(LocationRepository.findById(rs.getLong("location_id")));
+                person.setLocation(LocationRepository.findById(rs.getInt("location_id")));
             }
         } catch (SQLException ignored) {
         }
