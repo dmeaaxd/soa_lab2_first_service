@@ -17,7 +17,8 @@ public class RestConfiguration extends Application {
     private Set<Object> singletons = new HashSet<Object>();
     private Set<Class<?>> empty = new HashSet<Class<?>>();
 
-    public RestConfiguration(){
+    public RestConfiguration() throws ClassNotFoundException {
+        Class.forName("org.postgresql.Driver");
         singletons.add(new HelloWorldResource());
         singletons.add(new DragonResource());
     }
