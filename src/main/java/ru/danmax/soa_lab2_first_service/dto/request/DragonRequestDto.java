@@ -1,16 +1,23 @@
 package ru.danmax.soa_lab2_first_service.dto.request;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import ru.danmax.soa_lab2_first_service.dto.response.CoordinatesResponseDto;
-import ru.danmax.soa_lab2_first_service.dto.response.DragonResponseDto;
-import ru.danmax.soa_lab2_first_service.dto.response.PersonResponseDto;
+import lombok.NoArgsConstructor;
 import ru.danmax.soa_lab2_first_service.dto.validators.ValueOfEnum;
-import ru.danmax.soa_lab2_first_service.entities.Coordinates;
 import ru.danmax.soa_lab2_first_service.entities.Dragon;
-import ru.danmax.soa_lab2_first_service.entities.enums.*;
+import ru.danmax.soa_lab2_first_service.entities.enums.Color;
+import ru.danmax.soa_lab2_first_service.entities.enums.DragonCharacter;
+import ru.danmax.soa_lab2_first_service.entities.enums.DragonType;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DragonRequestDto {
     @NotNull
     @NotBlank(message = "Name не может быть пустым")

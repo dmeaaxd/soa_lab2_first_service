@@ -1,5 +1,6 @@
 package ru.danmax.soa_lab2_first_service.datasource.repositories;
 
+import ru.danmax.soa_lab2_first_service.entities.Coordinates;
 import ru.danmax.soa_lab2_first_service.entities.Dragon;
 import ru.danmax.soa_lab2_first_service.datasource.DataBase;
 
@@ -62,6 +63,42 @@ public class DragonRepository {
         } catch (SQLException ignored) {}
 
         return dragon;
+    }
+
+    public static Dragon save(Dragon dragon) throws SQLException, IllegalArgumentException {
+        if (dragon == null) {
+            throw new IllegalArgumentException("dragon can't be null");
+        }
+        Connection connection = DataBase.getConnection();
+
+        Dragon resultDragon = null;
+
+        String query = "INSERT INTO " + dragon.getTableName() + " (name, coordinates_id, age, color, dragon_type, character, killer_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        statement.setString(1, dragon.getName());
+        statement.setInt(2, dragon.getCoordinates().getId());
+        statement.setInt(3, dragon.getAge());
+        statement.setString(4, dragon.getColor() != null ? dragon.getColor().toString() : null);
+        statement.setString(5, dragon.getDragonType() != null ? dragon.getDragonType().toString() : null);
+        statement.setString(6, dragon.getCharacter() != null ? dragon.getCharacter().toString() : null);
+        statement.setInt(7, dragon.getKiller().getId());
+
+        int affectedRows = statement.executeUpdate();
+
+        if (affectedRows > 0) {
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int id = generatedKeys.getInt(1);
+                    System.out.println("Inserted dragon record's ID: " + id);
+                    resultDragon = DragonRepository.findById(id);
+                }
+            }
+        }
+        else {
+            throw new SQLException("Could not insert dragon record");
+        }
+        return resultDragon;
+
     }
 
     private static Dragon createDragonFromResultSet(ResultSet rs){
