@@ -81,7 +81,7 @@ public class DragonRepository {
         statement.setString(4, dragon.getColor() != null ? dragon.getColor().toString() : null);
         statement.setString(5, dragon.getDragonType() != null ? dragon.getDragonType().toString() : null);
         statement.setString(6, dragon.getCharacter() != null ? dragon.getCharacter().toString() : null);
-        statement.setInt(7, dragon.getKiller().getId());
+        statement.setInt(7, dragon.getKiller() != null ? dragon.getKiller().getId() : null);
 
         int affectedRows = statement.executeUpdate();
 
