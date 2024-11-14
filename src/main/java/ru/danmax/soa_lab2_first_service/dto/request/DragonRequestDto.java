@@ -2,8 +2,12 @@ package ru.danmax.soa_lab2_first_service.dto.request;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import ru.danmax.soa_lab2_first_service.dto.response.CoordinatesResponseDto;
+import ru.danmax.soa_lab2_first_service.dto.response.DragonResponseDto;
+import ru.danmax.soa_lab2_first_service.dto.response.PersonResponseDto;
 import ru.danmax.soa_lab2_first_service.dto.validators.ValueOfEnum;
 import ru.danmax.soa_lab2_first_service.entities.Coordinates;
+import ru.danmax.soa_lab2_first_service.entities.Dragon;
 import ru.danmax.soa_lab2_first_service.entities.enums.*;
 
 @Data
@@ -14,7 +18,7 @@ public class DragonRequestDto {
     private String name;
 
     @NotNull(message = "Coordinates не может быть пустым")
-    private Coordinates coordinates;
+    private CoordinatesRequestDto coordinatesRequestDto;
 
     @NotNull(message = "Age не может быть пустым")
     @Min(value = 1, message = "Age не может быть меньше 1")
@@ -28,4 +32,16 @@ public class DragonRequestDto {
 
     @ValueOfEnum(enumClass = DragonCharacter.class, message = "character должно быть одним из enum DragonCharacter")
     private String character;
+
+    public static Dragon convertToObject(DragonRequestDto dragonRequestDto) {
+        if (dragonRequestDto == null) return null;
+        return Dragon.builder()
+                .name(dragonRequestDto.getName())
+                .coordinates(CoordinatesRequestDto.convertToObject(dragonRequestDto.getCoordinatesRequestDto()))
+                .age(dragonRequestDto.getAge())
+                .color(dragonRequestDto.getColor() != null ? Color.valueOf(dragonRequestDto.getColor()) : null)
+                .dragonType(dragonRequestDto.getType() != null ? DragonType.valueOf(dragonRequestDto.getType()) : null)
+                .character(dragonRequestDto.getCharacter() != null ? DragonCharacter.valueOf(dragonRequestDto.getCharacter()) : null)
+                .build();
+    }
 }
