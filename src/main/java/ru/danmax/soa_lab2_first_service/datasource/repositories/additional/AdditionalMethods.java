@@ -53,24 +53,33 @@ public class AdditionalMethods {
     }
 
     public static String parseSort(String sort) throws SQLException, IllegalArgumentException {
-        StringBuilder sortBuilder = new StringBuilder();
-        String[] sortFields = sort.split(",\\s*");
+        String regex = "(\\w*):\\s*(\\w*)";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(sort);
 
-        for (String field : sortFields) {
-            if (!sortBuilder.isEmpty()) {
-                sortBuilder.append(", ");
-            }
-            if (isFieldInDragons(field)){
-                sortBuilder.append(field.replace("-", "")).append(sort.startsWith("-") ? " DESC" : " ASC");
-            }
-            else {
+        // Проверяем поля фильтров и их значения
+        StringBuilder sortBuilder = new StringBuilder();
+        while (matcher.find()) {
+            String field = matcher.group(1);
+            String direction = matcher.group(2);
+
+            if (!isFieldInDragons(field)) {
                 throw new IllegalArgumentException(String.format("""
-                                                                Invalid sort field: %s
-                                                                Acceptable fields: %s
-                                                                """, field, Arrays.toString(DRAGON_TABLE_COLUMNS.toArray())));
+                        Invalid sort field: %s
+                        Acceptable fields: %s
+                        """, field, Arrays.toString(DRAGON_TABLE_COLUMNS.toArray())));
             }
+
+            if (!direction.equals("asc") && !direction.equals("desc")) {
+                throw new IllegalArgumentException(String.format("""
+                        Invalid sort direction: %s
+                        """, direction));
+            }
+
+            sortBuilder.append(field).append(" ").append(direction).append(", ");
         }
-        return sortBuilder.toString();
+
+        return sortBuilder.substring(0, sortBuilder.toString().length() - 2);
     }
 
     public static String parseFilter(String filter) throws SQLException, IllegalArgumentException {
