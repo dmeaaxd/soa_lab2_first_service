@@ -1,13 +1,12 @@
 package ru.danmax.soa_lab2_first_service.resources;
 
 
-import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import ru.danmax.soa_lab2_first_service.dto.response.DragonResponseDto;
+import ru.danmax.soa_lab2_first_service.dto.response.ErrorResponseDto;
 import ru.danmax.soa_lab2_first_service.entities.Dragon;
-import ru.danmax.soa_lab2_first_service.entities.enums.DragonCharacter;
 import ru.danmax.soa_lab2_first_service.services.DragonService;
 
 import java.sql.SQLException;
@@ -28,13 +27,33 @@ public class DragonResource {
             @QueryParam("filter") String filter,
             @QueryParam("page") Integer page,
             @QueryParam("size") Integer size
-    ) throws SQLException {
-        List<Dragon> dragons = DragonService.getDragons(sort, filter, page, size);
-        List<DragonResponseDto> dragonResponseDtos = new ArrayList<>();
-        for (Dragon dragon : dragons) {
-            dragonResponseDtos.add(DragonResponseDto.convertToDTO(dragon));
+    ) {
+        try {
+            List<Dragon> dragons = DragonService.getDragons(sort, filter, page, size);
+            List<DragonResponseDto> dragonResponseDtos = new ArrayList<>();
+            for (Dragon dragon : dragons) {
+                dragonResponseDtos.add(DragonResponseDto.convertToDTO(dragon));
+            }
+            return Response.ok(dragonResponseDtos).build();
+        } catch (SQLException sqlException) {
+            return Response
+                    .status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(ErrorResponseDto
+                            .builder()
+                            .code(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())
+                            .message(sqlException.getMessage())
+                            .build())
+                    .build();
+        } catch (IllegalArgumentException illegalArgumentException) {
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity(ErrorResponseDto
+                            .builder()
+                            .code(Response.Status.BAD_REQUEST.getStatusCode())
+                            .message(illegalArgumentException.getMessage())
+                            .build())
+                    .build();
         }
-        return Response.ok(dragonResponseDtos).build();
     }
 
 //    @POST

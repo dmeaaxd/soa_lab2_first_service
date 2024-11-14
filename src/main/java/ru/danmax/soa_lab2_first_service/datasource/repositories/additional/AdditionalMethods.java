@@ -148,4 +148,18 @@ public class AdditionalMethods {
                 .replace("gt", ">")
                 .replace("ge", ">=");
     }
+
+    public static boolean checkPage(Integer page) throws IllegalArgumentException{
+        if (page <= 0) {
+            throw new IllegalArgumentException("page must be greater than zero");
+        }
+        return true;
+    }
+
+    public static boolean checkSize(Integer size) throws IllegalArgumentException{
+        if (size <= 0) {
+            throw new IllegalArgumentException("size must be greater than zero");
+        }
+        return true;
+    }
 }

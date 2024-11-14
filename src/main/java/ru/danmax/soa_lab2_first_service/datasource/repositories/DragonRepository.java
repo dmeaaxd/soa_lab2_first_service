@@ -12,7 +12,7 @@ import static ru.danmax.soa_lab2_first_service.datasource.repositories.additiona
 
 public class DragonRepository {
 
-    public static List<Dragon> findAll(String sort, String filter) throws SQLException {
+    public static List<Dragon> findAll(String sort, String filter, Integer page, Integer size) throws SQLException, IllegalArgumentException{
         Connection conn = DataBase.getConnection();
         String sql = String.format("SELECT * FROM %s", new Dragon().getTableName());
 
@@ -23,6 +23,15 @@ public class DragonRepository {
         if (sort != null && !sort.isEmpty()) {
             sql += " ORDER BY " + parseSort(sort);
         }
+
+        if (size != null && checkSize(size)) {
+            sql += " LIMIT " + size;
+
+            if (page != null && checkPage(page)) {
+                sql += " OFFSET " + page*size;
+            }
+        }
+
         sql += ";";
 
         ResultSet rs = conn.createStatement().executeQuery(sql);
