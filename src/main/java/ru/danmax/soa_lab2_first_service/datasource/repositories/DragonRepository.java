@@ -73,7 +73,7 @@ public class DragonRepository {
 
         Dragon resultDragon = null;
 
-        String query = "INSERT INTO " + dragon.getTableName() + " (name, coordinates_id, age, color, dragon_type, character, killer_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO " + dragon.getTableName() + " (name, coordinates_id, age, color, dragon_type, character, killer_id) VALUES (?, ?, ?, ?::color, ?::dragontype, ?::dragoncharacter, ?)";
         PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         statement.setString(1, dragon.getName());
         statement.setInt(2, dragon.getCoordinates().getId());
@@ -81,7 +81,7 @@ public class DragonRepository {
         statement.setString(4, dragon.getColor() != null ? dragon.getColor().toString() : null);
         statement.setString(5, dragon.getDragonType() != null ? dragon.getDragonType().toString() : null);
         statement.setString(6, dragon.getCharacter() != null ? dragon.getCharacter().toString() : null);
-        statement.setInt(7, dragon.getKiller() != null ? dragon.getKiller().getId() : null);
+        statement.setInt(7, dragon.getKiller() != null ? dragon.getKiller().getId() : 6);
 
         int affectedRows = statement.executeUpdate();
 
