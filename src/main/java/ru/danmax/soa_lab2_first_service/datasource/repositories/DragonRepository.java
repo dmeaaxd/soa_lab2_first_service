@@ -47,7 +47,7 @@ public class DragonRepository {
         return dragons;
     }
 
-    public static Dragon findById(long id) throws SQLException {
+    public static Dragon findById(int id) throws SQLException {
         Dragon dragon = null;
         Connection connection = DataBase.getConnection();
 

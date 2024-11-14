@@ -61,13 +61,13 @@ public class DragonResource {
 //        DragonService.addDragon(dragon);
 //        return Response.ok().build();
 //    }
-//
-//    @GET
-//    @Path("{id}")
-//    public Dragon getDragonById(@PathParam("id") Long id) {
-//        return dragonService.getDragonById(id);
-//    }
-//
+
+    @GET
+    @Path("{id}")
+    public DragonResponseDto getDragonById(@PathParam("id") Integer id) throws SQLException {
+        return DragonService.getDragonById(id);
+    }
+
 //    @PUT
 //    @Path("{id}")
 //    public Response updateDragon(@PathParam("id") Long id, Dragon dragon) {
