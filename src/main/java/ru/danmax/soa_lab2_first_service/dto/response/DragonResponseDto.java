@@ -1,5 +1,6 @@
 package ru.danmax.soa_lab2_first_service.dto.response;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,11 +15,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DragonResponseDto {
-    private int id;
+    private Integer id;
     private String name;
     private CoordinatesResponseDto coordinates;
     private LocalDateTime creationDate;
-    private int age;
+    private Integer age;
     private Color color;
     private DragonType dragonType;
     private DragonCharacter dragonCharacter;

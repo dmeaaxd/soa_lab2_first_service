@@ -1,5 +1,6 @@
 package ru.danmax.soa_lab2_first_service.dto.response;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +12,9 @@ import ru.danmax.soa_lab2_first_service.entities.Location;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LocationResponseDto {
-    private float x;
-    private float y;
-    private float z;
+    private Integer x;
+    private Double y;
+    private Integer z;
     private String name;
 
     public static LocationResponseDto convertToDTO(Location location) {

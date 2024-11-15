@@ -11,8 +11,8 @@ import ru.danmax.soa_lab2_first_service.entities.Coordinates;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CoordinatesResponseDto {
-    private int x;
-    private float y;
+    private Integer x;
+    private Float y;
 
     public static CoordinatesResponseDto convertToDTO(Coordinates coordinates) {
         if (coordinates == null) return null;

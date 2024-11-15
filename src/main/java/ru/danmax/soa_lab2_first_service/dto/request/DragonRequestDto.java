@@ -30,7 +30,7 @@ public class DragonRequestDto {
 
     @NotNull(message = "Age не может быть пустым")
     @Min(value = 1, message = "Age не может быть меньше 1")
-    private int age;
+    private Integer age;
 
     @ValueOfEnum(enumClass = Color.class, message = "color должно быть одним из enum Color")
     private String color;

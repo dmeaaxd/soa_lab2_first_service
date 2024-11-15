@@ -7,16 +7,17 @@ import lombok.NoArgsConstructor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.zip.DeflaterOutputStream;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Location implements Entity {
-    private int id;
-    private int x;
-    private double y; //Поле не может быть null
-    private int z;
+    private Integer id;
+    private Integer x;
+    private Double y; //Поле не может быть null
+    private Integer z;
     private String name; //Строка не может быть пустой, Поле не может быть null
 
     @Override
