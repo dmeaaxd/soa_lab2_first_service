@@ -50,7 +50,7 @@ CREATE TABLE coordinates (
 CREATE TABLE dragons (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    coordinates_id INT NOT NULL,
+    coordinates_id INT,
     creation_date timestamp NOT NULL default CURRENT_TIMESTAMP,
     age INT NOT NULL,
     color Color,
