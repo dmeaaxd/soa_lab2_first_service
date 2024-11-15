@@ -147,16 +147,21 @@ public class DragonService {
         }
     }
 
-    public List<Dragon> searchByName(String name) {
-        return null;
+    public static List<DragonResponseDto> searchByName(String name) throws SQLException {
+        List<Dragon> dragons = DragonRepository.findAllByNameSubstring(name);
+        List<DragonResponseDto> dragonResponseDtos = new ArrayList<>();
+        for (Dragon dragon : dragons) {
+            dragonResponseDtos.add(DragonResponseDto.convertToDTO(dragon));
+        }
+        return dragonResponseDtos;
     }
 
 
-    public List<Dragon> filterByKiller(Long passportId) {
+    public static List<Dragon> filterByKiller(Long passportId) {
         return null;
     }
 
-    public List<Dragon> filterByCharacter(DragonCharacter character) {
+    public static List<Dragon> filterByCharacter(DragonCharacter character) {
         return null;
     }
 }

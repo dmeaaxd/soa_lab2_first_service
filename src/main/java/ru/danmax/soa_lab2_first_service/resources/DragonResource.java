@@ -173,12 +173,23 @@ public class DragonResource {
                     .build();
         }
     }
-//
-//    @GET
-//    @Path("search-by-name")
-//    public List<Dragon> searchByName(@QueryParam("name") String name) {
-//        return dragonService.searchByName(name);
-//    }
+
+    @GET
+    @Path("search-by-name")
+    public Response searchByName(@QueryParam("name") String name) {
+        try {
+            return Response.ok(DragonService.searchByName(name)).build();
+        } catch (SQLException sqlException) {
+            return Response
+                    .status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(ErrorResponseDto
+                            .builder()
+                            .code(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())
+                            .message(sqlException.getMessage())
+                            .build())
+                    .build();
+        }
+    }
 //
 //    @GET
 //    @Path("filter-by-killer")

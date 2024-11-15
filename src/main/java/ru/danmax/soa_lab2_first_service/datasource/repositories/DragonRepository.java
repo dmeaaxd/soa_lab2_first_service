@@ -139,6 +139,21 @@ public class DragonRepository {
         connection.createStatement().execute("DELETE FROM " + new Dragon().getTableName() + " WHERE id = " + id);
     }
 
+    public static List<Dragon> findAllByNameSubstring(String name) throws SQLException {
+        Connection connection = DataBase.getConnection();
+        ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM " + new Dragon().getTableName() + " WHERE name LIKE '%" + name + "%'");
+
+        List<Dragon> dragons = new ArrayList<>();
+        while (rs.next()) {
+            Dragon dragon = createDragonFromResultSet(rs);
+            if (dragon != null) {
+                dragons.add(dragon);
+            }
+        }
+
+        return dragons;
+    }
+
     private static Dragon createDragonFromResultSet(ResultSet rs){
         Dragon dragon = null;
         try {
