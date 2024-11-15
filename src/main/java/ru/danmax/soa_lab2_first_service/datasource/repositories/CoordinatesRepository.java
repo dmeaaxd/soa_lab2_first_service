@@ -23,7 +23,7 @@ public class CoordinatesRepository {
         return coordinates;
     }
 
-    public static Coordinates save(Coordinates coordinates) throws SQLException, IllegalArgumentException {
+    public static Coordinates insert(Coordinates coordinates) throws SQLException, IllegalArgumentException {
         if (coordinates == null) {
             throw new IllegalArgumentException("Coordinates cannot be null");
         }

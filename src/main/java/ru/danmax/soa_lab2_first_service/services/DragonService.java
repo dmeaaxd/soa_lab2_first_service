@@ -46,7 +46,7 @@ public class DragonService {
 
             // Сохранить координаты дракона в БД
             if (dragon.getCoordinates().getId() == 0) {
-                dragon.setCoordinates(CoordinatesRepository.save(dragon.getCoordinates()));
+                dragon.setCoordinates(CoordinatesRepository.insert(dragon.getCoordinates()));
             }
 
             // Сохранить дракона в БД
