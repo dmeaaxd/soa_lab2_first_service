@@ -7,6 +7,7 @@ import ru.danmax.soa_lab2_first_service.datasource.DataBase;
 import ru.danmax.soa_lab2_first_service.datasource.repositories.CoordinatesRepository;
 import ru.danmax.soa_lab2_first_service.datasource.repositories.DragonRepository;
 import ru.danmax.soa_lab2_first_service.dto.request.DragonRequestDto;
+import ru.danmax.soa_lab2_first_service.dto.response.DragonResponseDto;
 import ru.danmax.soa_lab2_first_service.entities.Dragon;
 import ru.danmax.soa_lab2_first_service.entities.enums.DragonCharacter;
 import ru.danmax.soa_lab2_first_service.exceptions.EntityAlreadyExists;
@@ -60,8 +61,9 @@ public class DragonService {
     }
 
 
-    public Dragon getDragonById(Long id) {
-        return null;
+    public static DragonResponseDto getDragonById(Integer id) throws SQLException {
+        Dragon dragon = DragonRepository.findById(id);
+        return DragonResponseDto.convertToDTO(dragon);
     }
 
     public void updateDragon(Long id, Dragon dragon) {
