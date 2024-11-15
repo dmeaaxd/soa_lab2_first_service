@@ -92,23 +92,44 @@ public class DragonResource {
                     .build();
         }
     }
-//
-//    @GET
-//    @Path("{id}")
-//    public Dragon getDragonById(@PathParam("id") Long id) {
-//        return dragonService.getDragonById(id);
-//    }
+
+    @GET
+    @Path("/{id}")
+    public Response getDragonById(@PathParam("id") Integer id){
+        try {
+            Dragon dragon = DragonService.getDragonById(id);
+            return Response.ok(DragonResponseDto.convertToDTO(dragon)).build();
+        } catch (SQLException sqlException) {
+            return Response
+                    .status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(ErrorResponseDto
+                            .builder()
+                            .code(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())
+                            .message(sqlException.getMessage())
+                            .build())
+                    .build();
+        } catch (IllegalArgumentException illegalArgumentException) {
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .entity(ErrorResponseDto
+                            .builder()
+                            .code(Response.Status.NOT_FOUND.getStatusCode())
+                            .message(illegalArgumentException.getMessage())
+                            .build())
+                    .build();
+        }
+    }
 //
 //    @PUT
 //    @Path("{id}")
-//    public Response updateDragon(@PathParam("id") Long id, Dragon dragon) {
+//    public Response updateDragon(@PathParam("id") Integer id, Dragon dragon) {
 //        dragonService.updateDragon(id, dragon);
 //        return Response.ok().build();
 //    }
 //
 //    @DELETE
 //    @Path("{id}")
-//    public Response deleteDragon(@PathParam("id") Long id) {
+//    public Response deleteDragon(@PathParam("id") Integer id) {
 //        dragonService.deleteDragon(id);
 //        return Response.ok().build();
 //    }

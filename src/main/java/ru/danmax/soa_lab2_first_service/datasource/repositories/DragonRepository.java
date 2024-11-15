@@ -50,16 +50,17 @@ public class DragonRepository {
     public static Dragon findById(int id) throws SQLException {
         Dragon dragon = null;
         Connection connection = DataBase.getConnection();
-
-        try {
-            ResultSet rs = connection.createStatement().executeQuery(
-                    String.format("""
+        ResultSet rs = connection.createStatement().executeQuery(
+                String.format("""
                                 select * from %s
                                 where dragons.id = %d;
                             """, new Dragon().getTableName(), id)
-            );
-            dragon = (rs.next()) ? createDragonFromResultSet(rs) : null;
-        } catch (SQLException ignored) {}
+        );
+        dragon = (rs.next()) ? createDragonFromResultSet(rs) : null;
+
+        if (dragon == null){
+            throw new IllegalArgumentException("Dragon not found");
+        }
 
         return dragon;
     }

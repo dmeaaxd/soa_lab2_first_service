@@ -46,7 +46,7 @@ public class DragonService {
 
             // Сохранить координаты дракона в БД
             if (dragon.getCoordinates().getId() == 0) {
-                dragon.setCoordinates(CoordinatesRepository.save(dragon.getCoordinates()));
+                dragon.setCoordinates(CoordinatesRepository.insert(dragon.getCoordinates()));
             }
 
             // Сохранить дракона в БД
@@ -61,9 +61,8 @@ public class DragonService {
     }
 
 
-    public static DragonResponseDto getDragonById(Integer id) throws SQLException {
-        Dragon dragon = DragonRepository.findById(id);
-        return DragonResponseDto.convertToDTO(dragon);
+    public static Dragon getDragonById(Integer id) throws SQLException {
+        return DragonRepository.findById(id);
     }
 
     public void updateDragon(Long id, Dragon dragon) {
