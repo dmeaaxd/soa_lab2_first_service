@@ -13,9 +13,9 @@ import ru.danmax.soa_lab2_first_service.entities.Coordinates;
 @AllArgsConstructor
 public class CoordinatesRequestDto {
     @NotNull
-    private int x;
+    private Integer x;
 
-    private float y;
+    private Float y;
 
     public static Coordinates convertToObject(CoordinatesRequestDto coordinatesRequestDto) {
         if (coordinatesRequestDto == null) return null;

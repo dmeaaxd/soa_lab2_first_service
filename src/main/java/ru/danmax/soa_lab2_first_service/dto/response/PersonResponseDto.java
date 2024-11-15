@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.danmax.soa_lab2_first_service.entities.Dragon;
 import ru.danmax.soa_lab2_first_service.entities.Person;
 
 @Data
@@ -12,7 +11,7 @@ import ru.danmax.soa_lab2_first_service.entities.Person;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PersonResponseDto {
-    private int id;
+    private Integer id;
     private String name;
     private String passportId;
     private LocationResponseDto location;

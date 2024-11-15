@@ -5,7 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.danmax.soa_lab2_first_service.entities.Dragon;
-import ru.danmax.soa_lab2_first_service.entities.enums.*;
+import ru.danmax.soa_lab2_first_service.entities.enums.Color;
+import ru.danmax.soa_lab2_first_service.entities.enums.DragonCharacter;
+import ru.danmax.soa_lab2_first_service.entities.enums.DragonType;
 
 import java.time.LocalDateTime;
 
@@ -14,11 +16,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DragonResponseDto {
-    private int id;
+    private Integer id;
     private String name;
     private CoordinatesResponseDto coordinates;
     private LocalDateTime creationDate;
-    private int age;
+    private Integer age;
     private Color color;
     private DragonType dragonType;
     private DragonCharacter dragonCharacter;

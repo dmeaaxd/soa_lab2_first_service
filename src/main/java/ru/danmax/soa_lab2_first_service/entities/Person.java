@@ -13,7 +13,7 @@ import java.sql.SQLException;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Person implements Entity{
-    private int id;
+    private Integer id;
     private String name; //Поле не может быть null, Строка не может быть пустой
     private String passportId; //Длина строки должна быть не меньше 10, Длина строки не должна быть больше 32, Поле может быть null
     private Location location; //Поле не может быть null

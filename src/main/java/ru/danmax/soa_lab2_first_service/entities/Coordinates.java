@@ -13,9 +13,9 @@ import java.sql.SQLException;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Coordinates implements Entity{
-    private int id;
-    private int x; //Поле не может быть null
-    private float y;
+    private Integer id;
+    private Integer x; //Поле не может быть null
+    private Float y;
 
     @Override
     public String getTableName() {

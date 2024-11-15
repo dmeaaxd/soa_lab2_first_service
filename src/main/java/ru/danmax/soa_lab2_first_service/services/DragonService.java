@@ -8,13 +8,16 @@ import ru.danmax.soa_lab2_first_service.datasource.repositories.CoordinatesRepos
 import ru.danmax.soa_lab2_first_service.datasource.repositories.DragonRepository;
 import ru.danmax.soa_lab2_first_service.dto.request.DragonRequestDto;
 import ru.danmax.soa_lab2_first_service.dto.response.DragonResponseDto;
+import ru.danmax.soa_lab2_first_service.entities.Coordinates;
 import ru.danmax.soa_lab2_first_service.entities.Dragon;
 import ru.danmax.soa_lab2_first_service.entities.enums.DragonCharacter;
 import ru.danmax.soa_lab2_first_service.exceptions.EntityAlreadyExists;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 
@@ -22,8 +25,13 @@ import java.util.Set;
 public class DragonService {
 
 
-    public static List<Dragon> getDragons(String sort, String filter, Integer page, Integer size) throws SQLException, IllegalArgumentException {
-        return DragonRepository.findAll(sort, filter, page, size);
+    public static List<DragonResponseDto> getDragons(String sort, String filter, Integer page, Integer size) throws SQLException, IllegalArgumentException {
+        List<Dragon> dragons = DragonRepository.findAll(sort, filter, page, size);
+        List<DragonResponseDto> dragonResponseDtos = new ArrayList<>();
+        for (Dragon dragon : dragons) {
+            dragonResponseDtos.add(DragonResponseDto.convertToDTO(dragon));
+        }
+        return dragonResponseDtos;
     }
 
 
@@ -37,7 +45,6 @@ public class DragonService {
 
         //Конвертируем DTO в объект Dragon
         Dragon dragon = DragonRequestDto.convertToObject(dragonRequestDto);
-        System.out.println(dragon);
 
         // Транзакция добавления дракона в БД
         Connection connection = DataBase.getConnection();
@@ -45,9 +52,7 @@ public class DragonService {
             connection.setAutoCommit(false);
 
             // Сохранить координаты дракона в БД
-            if (dragon.getCoordinates().getId() == 0) {
-                dragon.setCoordinates(CoordinatesRepository.insert(dragon.getCoordinates()));
-            }
+            dragon.setCoordinates(CoordinatesRepository.insert(dragon.getCoordinates()));
 
             // Сохранить дракона в БД
             DragonRepository.insert(dragon);
@@ -61,11 +66,59 @@ public class DragonService {
     }
 
 
-    public static Dragon getDragonById(Integer id) throws SQLException {
-        return DragonRepository.findById(id);
+    public static DragonResponseDto getDragonById(Integer id) throws SQLException, NoSuchElementException {
+        Dragon dragon = DragonRepository.findById(id);
+        if (dragon == null) {
+            throw new NoSuchElementException("Dragon not found");
+        }
+        return DragonResponseDto.convertToDTO(dragon);
     }
 
-    public void updateDragon(Long id, Dragon dragon) {
+    public static void updateDragon(Integer id, DragonRequestDto dragonRequestDto) throws SQLException, IllegalArgumentException, NoSuchElementException {
+        // Валидируем пришедшие данные
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<DragonRequestDto>> validationResult = validator.validate(dragonRequestDto);
+        for (ConstraintViolation<DragonRequestDto> violation : validationResult) {
+            throw new IllegalArgumentException(violation.getMessage());
+        }
+
+        // Подготавливаем дракона
+        Dragon updatedDragon = DragonRequestDto.convertToObject(dragonRequestDto);
+        updatedDragon.setId(id);
+
+        // Подготавливаем новые координаты
+        Coordinates updatedCoordinates = updatedDragon.getCoordinates();
+        Dragon existDragon = DragonRepository.findById(updatedDragon.getId());
+        if (existDragon == null) {
+            throw new NoSuchElementException("Dragon not found");
+        }
+
+        int coordinatesId = existDragon.getCoordinates().getId();
+        updatedCoordinates.setId(coordinatesId);
+
+        // Транзакция обновления дракона в БД
+        Connection connection = DataBase.getConnection();
+        try {
+            connection.setAutoCommit(false);
+
+            // Обновляем координаты дракона в БД
+            updatedCoordinates = CoordinatesRepository.update(updatedCoordinates);
+            if (updatedCoordinates == null){
+                throw new NoSuchElementException("Coordinates not found");
+            }
+
+            // Обновляем дракона в БД
+            updatedDragon = DragonRepository.update(updatedDragon);
+            if (updatedDragon == null){
+                throw new NoSuchElementException("Dragon not found");
+            }
+
+            connection.commit();
+        } catch (SQLException | IllegalArgumentException | NoSuchElementException exception) {
+            connection.rollback();
+            connection.setAutoCommit(true);
+            throw exception;
+        }
     }
 
     public void deleteDragon(Long id) {

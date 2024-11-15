@@ -1,8 +1,7 @@
 package ru.danmax.soa_lab2_first_service.datasource.repositories;
 
-import ru.danmax.soa_lab2_first_service.entities.Dragon;
 import ru.danmax.soa_lab2_first_service.datasource.DataBase;
-
+import ru.danmax.soa_lab2_first_service.entities.Dragon;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -47,8 +46,7 @@ public class DragonRepository {
         return dragons;
     }
 
-    public static Dragon findById(int id) throws SQLException {
-        Dragon dragon = null;
+    public static Dragon findById(int id) throws SQLException{
         Connection connection = DataBase.getConnection();
         ResultSet rs = connection.createStatement().executeQuery(
                 String.format("""
@@ -56,18 +54,12 @@ public class DragonRepository {
                                 where dragons.id = %d;
                             """, new Dragon().getTableName(), id)
         );
-        dragon = (rs.next()) ? createDragonFromResultSet(rs) : null;
-
-        if (dragon == null){
-            throw new IllegalArgumentException("Dragon not found");
-        }
-
-        return dragon;
+        return (rs.next()) ? createDragonFromResultSet(rs) : null;
     }
 
     public static Dragon insert(Dragon dragon) throws SQLException, IllegalArgumentException {
         if (dragon == null) {
-            throw new IllegalArgumentException("dragon can't be null");
+            throw new IllegalArgumentException("Dragon cannot be null");
         }
         Connection connection = DataBase.getConnection();
 
@@ -85,26 +77,62 @@ public class DragonRepository {
         if (dragon.getKiller() != null) statement.setInt(7, dragon.getKiller().getId());
         else statement.setNull(7, Types.INTEGER);
 
-
         int affectedRows = statement.executeUpdate();
 
         if (affectedRows > 0) {
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     int id = generatedKeys.getInt(1);
-                    System.out.println("Inserted dragon record's ID: " + id);
                     resultDragon = DragonRepository.findById(id);
                 }
             }
         }
         else {
-            throw new SQLException("Could not insert dragon record");
+            throw new SQLException("Could not update dragon record");
         }
         return resultDragon;
-
     }
 
+    public static Dragon update(Dragon dragon) throws SQLException, IllegalArgumentException{
+        if (dragon == null) {
+            throw new IllegalArgumentException("Dragon cannot be null");
+        }
+        Dragon resultDragon = null;
+        Connection connection = DataBase.getConnection();
 
+        String query = "UPDATE " + dragon.getTableName() + " SET \n";
+        query += "\"name\" = ?, \n";
+        query += "age = ?, \n";
+        query += "color = ?::color, \n";
+        query += "dragon_type = ?::dragontype, \n";
+        query += "character = ?::dragoncharacter, \n";
+        query += "killer_id = ? \n";
+        query += "WHERE id = " + dragon.getId();
+
+        PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        statement.setString(1, dragon.getName());
+        statement.setInt(2, dragon.getAge());
+        statement.setString(3, dragon.getColor() != null ? dragon.getColor().toString() : null);
+        statement.setString(4, dragon.getDragonType() != null ? dragon.getDragonType().toString() : null);
+        statement.setString(5, dragon.getCharacter() != null ? dragon.getCharacter().toString() : null);
+
+        if (dragon.getKiller() != null) statement.setInt(6, dragon.getKiller().getId());
+        else statement.setNull(6, Types.INTEGER);
+
+        int affectedRows = statement.executeUpdate();
+        if (affectedRows > 0) {
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int id = generatedKeys.getInt(1);
+                    resultDragon = DragonRepository.findById(id);
+                }
+            }
+        }
+        else {
+            throw new SQLException("Could not update dragon record");
+        }
+        return resultDragon;
+    }
 
 
 

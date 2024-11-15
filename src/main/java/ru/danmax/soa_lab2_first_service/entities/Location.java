@@ -13,10 +13,10 @@ import java.sql.SQLException;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Location implements Entity {
-    private int id;
-    private float x;
-    private float y; //Поле не может быть null
-    private float z;
+    private Integer id;
+    private Integer x;
+    private Double y; //Поле не может быть null
+    private Integer z;
     private String name; //Строка не может быть пустой, Поле не может быть null
 
     @Override
@@ -27,9 +27,9 @@ public class Location implements Entity {
     public static Location createLocationFromResultSet(ResultSet rs) throws SQLException {
         return Location.builder()
                 .id(rs.getInt("id"))
-                .x(rs.getFloat("x"))
-                .y(rs.getFloat("y"))
-                .z(rs.getFloat("z"))
+                .x(rs.getInt("x"))
+                .y(rs.getDouble("y"))
+                .z(rs.getInt("z"))
                 .name(rs.getString("name"))
                 .build();
     }

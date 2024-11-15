@@ -5,15 +5,12 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import ru.danmax.soa_lab2_first_service.dto.request.DragonRequestDto;
-import ru.danmax.soa_lab2_first_service.dto.response.DragonResponseDto;
 import ru.danmax.soa_lab2_first_service.dto.response.ErrorResponseDto;
-import ru.danmax.soa_lab2_first_service.entities.Dragon;
 import ru.danmax.soa_lab2_first_service.exceptions.EntityAlreadyExists;
 import ru.danmax.soa_lab2_first_service.services.DragonService;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.NoSuchElementException;
 
 
 @Path("dragons")
@@ -31,12 +28,7 @@ public class DragonResource {
             @QueryParam("size") Integer size
     ) {
         try {
-            List<Dragon> dragons = DragonService.getDragons(sort, filter, page, size);
-            List<DragonResponseDto> dragonResponseDtos = new ArrayList<>();
-            for (Dragon dragon : dragons) {
-                dragonResponseDtos.add(DragonResponseDto.convertToDTO(dragon));
-            }
-            return Response.ok(dragonResponseDtos).build();
+            return Response.ok(DragonService.getDragons(sort, filter, page, size)).build();
         } catch (SQLException sqlException) {
             return Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -97,8 +89,34 @@ public class DragonResource {
     @Path("/{id}")
     public Response getDragonById(@PathParam("id") Integer id){
         try {
-            Dragon dragon = DragonService.getDragonById(id);
-            return Response.ok(DragonResponseDto.convertToDTO(dragon)).build();
+            return Response.ok(DragonService.getDragonById(id)).build();
+        } catch (SQLException sqlException) {
+            return Response
+                    .status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(ErrorResponseDto
+                            .builder()
+                            .code(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())
+                            .message(sqlException.getMessage())
+                            .build())
+                    .build();
+        } catch (NoSuchElementException noSuchElementException) {
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .entity(ErrorResponseDto
+                            .builder()
+                            .code(Response.Status.NOT_FOUND.getStatusCode())
+                            .message(noSuchElementException.getMessage())
+                            .build())
+                    .build();
+        }
+    }
+
+    @PUT
+    @Path("/{id}")
+    public Response updateDragon(@PathParam("id") Integer id, DragonRequestDto dragonRequestDto) {
+        try {
+            DragonService.updateDragon(id, dragonRequestDto);
+            return Response.ok().build();
         } catch (SQLException sqlException) {
             return Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -110,23 +128,25 @@ public class DragonResource {
                     .build();
         } catch (IllegalArgumentException illegalArgumentException) {
             return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity(ErrorResponseDto
+                            .builder()
+                            .code(Response.Status.BAD_REQUEST.getStatusCode())
+                            .message(illegalArgumentException.getMessage())
+                            .build())
+                    .build();
+        } catch (NoSuchElementException noSuchElementException){
+            return Response
                     .status(Response.Status.NOT_FOUND)
                     .entity(ErrorResponseDto
                             .builder()
                             .code(Response.Status.NOT_FOUND.getStatusCode())
-                            .message(illegalArgumentException.getMessage())
+                            .message(noSuchElementException.getMessage())
                             .build())
                     .build();
         }
     }
-//
-//    @PUT
-//    @Path("{id}")
-//    public Response updateDragon(@PathParam("id") Integer id, Dragon dragon) {
-//        dragonService.updateDragon(id, dragon);
-//        return Response.ok().build();
-//    }
-//
+
 //    @DELETE
 //    @Path("{id}")
 //    public Response deleteDragon(@PathParam("id") Integer id) {
