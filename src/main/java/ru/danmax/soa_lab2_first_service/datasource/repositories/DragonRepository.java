@@ -107,6 +107,7 @@ public class DragonRepository {
         query += "dragon_type = ?::dragontype, \n";
         query += "character = ?::dragoncharacter, \n";
         query += "killer_id = ? \n";
+        query += "WHERE id = " + dragon.getId();
 
         PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         statement.setString(1, dragon.getName());
