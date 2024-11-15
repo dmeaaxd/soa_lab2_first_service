@@ -61,9 +61,8 @@ public class DragonService {
     }
 
 
-    public static DragonResponseDto getDragonById(Integer id) throws SQLException {
-        Dragon dragon = DragonRepository.findById(id);
-        return DragonResponseDto.convertToDTO(dragon);
+    public static Dragon getDragonById(Integer id) throws SQLException {
+        return DragonRepository.findById(id);
     }
 
     public void updateDragon(Long id, Dragon dragon) {
