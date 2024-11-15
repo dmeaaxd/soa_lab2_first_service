@@ -54,7 +54,7 @@ public class DragonResource {
     public Response addDragon(DragonRequestDto dragonRequestDto) {
         try {
             DragonService.addDragon(dragonRequestDto);
-            return Response.ok().build();
+            return Response.status(Response.Status.CREATED).build();
         } catch (SQLException sqlException) {
             return Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -147,12 +147,32 @@ public class DragonResource {
         }
     }
 
-//    @DELETE
-//    @Path("{id}")
-//    public Response deleteDragon(@PathParam("id") Integer id) {
-//        dragonService.deleteDragon(id);
-//        return Response.ok().build();
-//    }
+    @DELETE
+    @Path("{id}")
+    public Response deleteDragon(@PathParam("id") Integer id) {
+        try {
+            DragonService.deleteDragon(id);
+            return Response.ok().build();
+        } catch (SQLException sqlException) {
+            return Response
+                    .status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(ErrorResponseDto
+                            .builder()
+                            .code(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())
+                            .message(sqlException.getMessage())
+                            .build())
+                    .build();
+        } catch (NoSuchElementException noSuchElementException){
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .entity(ErrorResponseDto
+                            .builder()
+                            .code(Response.Status.NOT_FOUND.getStatusCode())
+                            .message(noSuchElementException.getMessage())
+                            .build())
+                    .build();
+        }
+    }
 //
 //    @GET
 //    @Path("search-by-name")
