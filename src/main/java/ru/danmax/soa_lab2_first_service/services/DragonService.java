@@ -14,6 +14,7 @@ import ru.danmax.soa_lab2_first_service.exceptions.EntityAlreadyExists;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -22,8 +23,13 @@ import java.util.Set;
 public class DragonService {
 
 
-    public static List<Dragon> getDragons(String sort, String filter, Integer page, Integer size) throws SQLException, IllegalArgumentException {
-        return DragonRepository.findAll(sort, filter, page, size);
+    public static List<DragonResponseDto> getDragons(String sort, String filter, Integer page, Integer size) throws SQLException, IllegalArgumentException {
+        List<Dragon> dragons = DragonRepository.findAll(sort, filter, page, size);
+        List<DragonResponseDto> dragonResponseDtos = new ArrayList<>();
+        for (Dragon dragon : dragons) {
+            dragonResponseDtos.add(DragonResponseDto.convertToDTO(dragon));
+        }
+        return dragonResponseDtos;
     }
 
 
@@ -37,7 +43,6 @@ public class DragonService {
 
         //Конвертируем DTO в объект Dragon
         Dragon dragon = DragonRequestDto.convertToObject(dragonRequestDto);
-        System.out.println(dragon);
 
         // Транзакция добавления дракона в БД
         Connection connection = DataBase.getConnection();
@@ -61,11 +66,11 @@ public class DragonService {
     }
 
 
-    public static Dragon getDragonById(Integer id) throws SQLException {
-        return DragonRepository.findById(id);
+    public static DragonResponseDto getDragonById(Integer id) throws SQLException {
+        return DragonResponseDto.convertToDTO(DragonRepository.findById(id));
     }
 
-    public void updateDragon(Long id, Dragon dragon) {
+    public static void updateDragon(Integer id, DragonRequestDto dragonRequestDto) {
     }
 
     public void deleteDragon(Long id) {

@@ -31,12 +31,7 @@ public class DragonResource {
             @QueryParam("size") Integer size
     ) {
         try {
-            List<Dragon> dragons = DragonService.getDragons(sort, filter, page, size);
-            List<DragonResponseDto> dragonResponseDtos = new ArrayList<>();
-            for (Dragon dragon : dragons) {
-                dragonResponseDtos.add(DragonResponseDto.convertToDTO(dragon));
-            }
-            return Response.ok(dragonResponseDtos).build();
+            return Response.ok(DragonService.getDragons(sort, filter, page, size)).build();
         } catch (SQLException sqlException) {
             return Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -97,8 +92,7 @@ public class DragonResource {
     @Path("/{id}")
     public Response getDragonById(@PathParam("id") Integer id){
         try {
-            Dragon dragon = DragonService.getDragonById(id);
-            return Response.ok(DragonResponseDto.convertToDTO(dragon)).build();
+            return Response.ok(DragonService.getDragonById(id)).build();
         } catch (SQLException sqlException) {
             return Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -119,14 +113,43 @@ public class DragonResource {
                     .build();
         }
     }
-//
+
 //    @PUT
-//    @Path("{id}")
-//    public Response updateDragon(@PathParam("id") Integer id, Dragon dragon) {
-//        dragonService.updateDragon(id, dragon);
-//        return Response.ok().build();
+//    @Path("/{id}")
+//    public Response updateDragon(@PathParam("id") Integer id, DragonRequestDto dragonRequestDto) {
+//        try {
+//            DragonService.updateDragon(id, dragonRequestDto);
+//            return Response.ok().build();
+//        } catch (SQLException sqlException) {
+//            return Response
+//                    .status(Response.Status.INTERNAL_SERVER_ERROR)
+//                    .entity(ErrorResponseDto
+//                            .builder()
+//                            .code(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())
+//                            .message(sqlException.getMessage())
+//                            .build())
+//                    .build();
+//        } catch (IllegalArgumentException illegalArgumentException) {
+//            return Response
+//                    .status(Response.Status.BAD_REQUEST)
+//                    .entity(ErrorResponseDto
+//                            .builder()
+//                            .code(Response.Status.BAD_REQUEST.getStatusCode())
+//                            .message(illegalArgumentException.getMessage())
+//                            .build())
+//                    .build();
+//        } catch (EntityAlreadyExists entityAlreadyExists){
+//            return Response
+//                    .status(Response.Status.CONFLICT)
+//                    .entity(ErrorResponseDto
+//                            .builder()
+//                            .code(Response.Status.CONFLICT.getStatusCode())
+//                            .message(entityAlreadyExists.getMessage())
+//                            .build())
+//                    .build();
+//        }
 //    }
-//
+
 //    @DELETE
 //    @Path("{id}")
 //    public Response deleteDragon(@PathParam("id") Integer id) {
