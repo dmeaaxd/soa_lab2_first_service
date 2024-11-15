@@ -57,7 +57,7 @@ CREATE TABLE dragons (
     dragon_type DragonType,
     character DragonCharacter,
     killer_id INT,
-    FOREIGN KEY (coordinates_id) REFERENCES coordinates (id) ON DELETE CASCADE,
+    FOREIGN KEY (coordinates_id) REFERENCES coordinates (id) ON DELETE SET NULL ,
     FOREIGN KEY (killer_id) REFERENCES persons (id) ON DELETE RESTRICT,
     CONSTRAINT dragon_chk_age CHECK (age > 0),
     CONSTRAINT dragon_chk_name CHECK (char_length(name) > 0)

@@ -134,7 +134,10 @@ public class DragonRepository {
         return resultDragon;
     }
 
-
+    public static void delete(Integer id) throws SQLException {
+        Connection connection = DataBase.getConnection();
+        connection.createStatement().execute("DELETE FROM " + new Dragon().getTableName() + " WHERE id = " + id);
+    }
 
     private static Dragon createDragonFromResultSet(ResultSet rs){
         Dragon dragon = null;
@@ -152,4 +155,6 @@ public class DragonRepository {
 
         return dragon;
     }
+
+
 }

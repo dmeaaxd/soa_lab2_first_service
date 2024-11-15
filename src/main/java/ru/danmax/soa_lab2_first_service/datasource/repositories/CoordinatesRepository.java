@@ -59,4 +59,9 @@ public class CoordinatesRepository {
         connection.createStatement().execute(query);
         return findById(coordinates.getId());
     }
+
+    public static void delete(Integer id) throws SQLException {
+        Connection connection = DataBase.getConnection();
+        connection.createStatement().execute("DELETE FROM " + new Coordinates().getTableName() + " WHERE id = " + id);
+    }
 }

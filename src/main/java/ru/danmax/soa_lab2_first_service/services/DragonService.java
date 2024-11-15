@@ -121,7 +121,30 @@ public class DragonService {
         }
     }
 
-    public void deleteDragon(Long id) {
+    public static void deleteDragon(Integer id) throws SQLException, NoSuchElementException {
+        // Получаем дракона
+        Dragon dragon = DragonRepository.findById(id);
+        if (dragon == null) {
+            throw new NoSuchElementException("Dragon not found");
+        }
+
+        // Получаем идентификатор координат
+        int coordinatesId = dragon.getCoordinates().getId();
+
+        // Транзакция удаления
+        Connection connection = DataBase.getConnection();
+        try {
+            connection.setAutoCommit(false);
+
+            CoordinatesRepository.delete(coordinatesId);
+            DragonRepository.delete(id);
+
+            connection.commit();
+        } catch (SQLException | NoSuchElementException exception) {
+            connection.rollback();
+            connection.setAutoCommit(true);
+            throw exception;
+        }
     }
 
     public List<Dragon> searchByName(String name) {
