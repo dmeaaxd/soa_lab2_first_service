@@ -117,7 +117,7 @@ public class DragonRepository {
         statement.setString(5, dragon.getCharacter() != null ? dragon.getCharacter().toString() : null);
 
         if (dragon.getKiller() != null) statement.setInt(6, dragon.getKiller().getId());
-        else statement.setNull(7, Types.INTEGER);
+        else statement.setNull(6, Types.INTEGER);
 
         int affectedRows = statement.executeUpdate();
         if (affectedRows > 0) {
