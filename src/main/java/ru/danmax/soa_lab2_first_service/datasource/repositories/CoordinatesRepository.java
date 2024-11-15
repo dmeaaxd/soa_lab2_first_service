@@ -6,21 +6,15 @@ import ru.danmax.soa_lab2_first_service.entities.Coordinates;
 import java.sql.*;
 
 public class CoordinatesRepository {
-    public static Coordinates findById(long id) throws SQLException {
-        Coordinates coordinates = null;
+    public static Coordinates findById(int id) throws SQLException {
         Connection connection = DataBase.getConnection();
-
-        try {
-            ResultSet rs = connection.createStatement().executeQuery(
-                    String.format("""
+        ResultSet rs = connection.createStatement().executeQuery(
+                String.format("""
                                 select * from coordinates
                                 where coordinates.id = %d;
                             """, id)
-            );
-            coordinates = (rs.next()) ? Coordinates.createCoordinatesFromResultSet(rs) : null;
-        } catch (SQLException ignored) {
-        }
-        return coordinates;
+        );
+        return (rs.next()) ? Coordinates.createCoordinatesFromResultSet(rs) : null;
     }
 
     public static Coordinates insert(Coordinates coordinates) throws SQLException, IllegalArgumentException {
@@ -50,5 +44,20 @@ public class CoordinatesRepository {
             throw new SQLException("Could not insert coordinates record");
         }
         return resultCoordinates;
+    }
+
+    public static Coordinates update(Coordinates coordinates) throws SQLException, IllegalArgumentException {
+        if (coordinates == null) {
+            throw new IllegalArgumentException("Coordinates cannot be null");
+        }
+        Connection connection = DataBase.getConnection();
+
+        String query = "UPDATE " + coordinates.getTableName() + " SET \n";
+        query += "x = " + coordinates.getX() + ", ";
+        query += "y = " + coordinates.getY();
+        query += " WHERE id = " + coordinates.getId() + ";";
+
+        connection.createStatement().execute(query);
+        return findById(coordinates.getId());
     }
 }

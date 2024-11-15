@@ -14,6 +14,7 @@ import ru.danmax.soa_lab2_first_service.services.DragonService;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 @Path("dragons")
@@ -102,53 +103,53 @@ public class DragonResource {
                             .message(sqlException.getMessage())
                             .build())
                     .build();
-        } catch (IllegalArgumentException illegalArgumentException) {
+        } catch (NoSuchElementException noSuchElementException) {
             return Response
                     .status(Response.Status.NOT_FOUND)
                     .entity(ErrorResponseDto
                             .builder()
                             .code(Response.Status.NOT_FOUND.getStatusCode())
-                            .message(illegalArgumentException.getMessage())
+                            .message(noSuchElementException.getMessage())
                             .build())
                     .build();
         }
     }
 
-//    @PUT
-//    @Path("/{id}")
-//    public Response updateDragon(@PathParam("id") Integer id, DragonRequestDto dragonRequestDto) {
-//        try {
-//            DragonService.updateDragon(id, dragonRequestDto);
-//            return Response.ok().build();
-//        } catch (SQLException sqlException) {
-//            return Response
-//                    .status(Response.Status.INTERNAL_SERVER_ERROR)
-//                    .entity(ErrorResponseDto
-//                            .builder()
-//                            .code(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())
-//                            .message(sqlException.getMessage())
-//                            .build())
-//                    .build();
-//        } catch (IllegalArgumentException illegalArgumentException) {
-//            return Response
-//                    .status(Response.Status.BAD_REQUEST)
-//                    .entity(ErrorResponseDto
-//                            .builder()
-//                            .code(Response.Status.BAD_REQUEST.getStatusCode())
-//                            .message(illegalArgumentException.getMessage())
-//                            .build())
-//                    .build();
-//        } catch (EntityAlreadyExists entityAlreadyExists){
-//            return Response
-//                    .status(Response.Status.CONFLICT)
-//                    .entity(ErrorResponseDto
-//                            .builder()
-//                            .code(Response.Status.CONFLICT.getStatusCode())
-//                            .message(entityAlreadyExists.getMessage())
-//                            .build())
-//                    .build();
-//        }
-//    }
+    @PUT
+    @Path("/{id}")
+    public Response updateDragon(@PathParam("id") Integer id, DragonRequestDto dragonRequestDto) {
+        try {
+            DragonService.updateDragon(id, dragonRequestDto);
+            return Response.ok().build();
+        } catch (SQLException sqlException) {
+            return Response
+                    .status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(ErrorResponseDto
+                            .builder()
+                            .code(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())
+                            .message(sqlException.getMessage())
+                            .build())
+                    .build();
+        } catch (IllegalArgumentException illegalArgumentException) {
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity(ErrorResponseDto
+                            .builder()
+                            .code(Response.Status.BAD_REQUEST.getStatusCode())
+                            .message(illegalArgumentException.getMessage())
+                            .build())
+                    .build();
+        } catch (NoSuchElementException noSuchElementException){
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .entity(ErrorResponseDto
+                            .builder()
+                            .code(Response.Status.NOT_FOUND.getStatusCode())
+                            .message(noSuchElementException.getMessage())
+                            .build())
+                    .build();
+        }
+    }
 
 //    @DELETE
 //    @Path("{id}")

@@ -1,5 +1,6 @@
 package ru.danmax.soa_lab2_first_service.datasource.repositories;
 
+import ru.danmax.soa_lab2_first_service.entities.Coordinates;
 import ru.danmax.soa_lab2_first_service.entities.Dragon;
 import ru.danmax.soa_lab2_first_service.datasource.DataBase;
 
@@ -7,6 +8,7 @@ import ru.danmax.soa_lab2_first_service.datasource.DataBase;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static ru.danmax.soa_lab2_first_service.datasource.repositories.additional.AdditionalMethods.*;
 
@@ -47,8 +49,7 @@ public class DragonRepository {
         return dragons;
     }
 
-    public static Dragon findById(int id) throws SQLException {
-        Dragon dragon = null;
+    public static Dragon findById(int id) throws SQLException{
         Connection connection = DataBase.getConnection();
         ResultSet rs = connection.createStatement().executeQuery(
                 String.format("""
@@ -56,18 +57,12 @@ public class DragonRepository {
                                 where dragons.id = %d;
                             """, new Dragon().getTableName(), id)
         );
-        dragon = (rs.next()) ? createDragonFromResultSet(rs) : null;
-
-        if (dragon == null){
-            throw new IllegalArgumentException("Dragon not found");
-        }
-
-        return dragon;
+        return (rs.next()) ? createDragonFromResultSet(rs) : null;
     }
 
     public static Dragon insert(Dragon dragon) throws SQLException, IllegalArgumentException {
         if (dragon == null) {
-            throw new IllegalArgumentException("dragon can't be null");
+            throw new IllegalArgumentException("Dragon cannot be null");
         }
         Connection connection = DataBase.getConnection();
 
@@ -104,7 +99,23 @@ public class DragonRepository {
 
     }
 
+    public static Dragon update(Dragon dragon) throws SQLException, IllegalArgumentException{
+        if (dragon == null) {
+            throw new IllegalArgumentException("Dragon cannot be null");
+        }
+        Connection connection = DataBase.getConnection();
 
+        String query = "UPDATE " + dragon.getTableName() + " SET \n";
+        query += "name = " + dragon.getName() + ", ";
+        query += "age = " + dragon.getAge() + ", ";
+        query += "color = " + dragon.getColor() + ", ";
+        query += "dragon_type = " + dragon.getDragonType() + ", ";
+        query += "character = " + dragon.getCharacter() + ", ";
+        query += "killer_id = " + dragon.getKiller().getId() + ", ";
+
+        connection.createStatement().execute(query);
+        return findById(dragon.getId());
+    }
 
 
 
