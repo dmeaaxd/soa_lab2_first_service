@@ -4,9 +4,11 @@ package ru.danmax.soa_lab2_first_service.resources;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import ru.danmax.soa_lab2_first_service.dto.request.DragonRequestDto;
 import ru.danmax.soa_lab2_first_service.dto.response.DragonResponseDto;
 import ru.danmax.soa_lab2_first_service.dto.response.ErrorResponseDto;
 import ru.danmax.soa_lab2_first_service.entities.Dragon;
+import ru.danmax.soa_lab2_first_service.exceptions.EntityAlreadyExists;
 import ru.danmax.soa_lab2_first_service.services.DragonService;
 
 import java.sql.SQLException;
@@ -56,18 +58,47 @@ public class DragonResource {
         }
     }
 
-//    @POST
-//    public Response addDragon(Dragon dragon) {
-//        DragonService.addDragon(dragon);
-//        return Response.ok().build();
-//    }
-
-    @GET
-    @Path("{id}")
-    public DragonResponseDto getDragonById(@PathParam("id") Integer id) throws SQLException {
-        return DragonService.getDragonById(id);
+    @POST
+    public Response addDragon(DragonRequestDto dragonRequestDto) {
+        try {
+            DragonService.addDragon(dragonRequestDto);
+            return Response.ok().build();
+        } catch (SQLException sqlException) {
+            return Response
+                    .status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(ErrorResponseDto
+                            .builder()
+                            .code(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())
+                            .message(sqlException.getMessage())
+                            .build())
+                    .build();
+        } catch (IllegalArgumentException illegalArgumentException) {
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity(ErrorResponseDto
+                            .builder()
+                            .code(Response.Status.BAD_REQUEST.getStatusCode())
+                            .message(illegalArgumentException.getMessage())
+                            .build())
+                    .build();
+        } catch (EntityAlreadyExists entityAlreadyExists){
+            return Response
+                    .status(Response.Status.CONFLICT)
+                    .entity(ErrorResponseDto
+                            .builder()
+                            .code(Response.Status.CONFLICT.getStatusCode())
+                            .message(entityAlreadyExists.getMessage())
+                            .build())
+                    .build();
+        }
     }
-
+//
+//    @GET
+//    @Path("{id}")
+//    public Dragon getDragonById(@PathParam("id") Long id) {
+//        return dragonService.getDragonById(id);
+//    }
+//
 //    @PUT
 //    @Path("{id}")
 //    public Response updateDragon(@PathParam("id") Long id, Dragon dragon) {

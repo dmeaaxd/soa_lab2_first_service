@@ -1,12 +1,16 @@
 package ru.danmax.soa_lab2_first_service.dto.request;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import ru.danmax.soa_lab2_first_service.dto.response.DragonResponseDto;
+import lombok.NoArgsConstructor;
 import ru.danmax.soa_lab2_first_service.entities.Coordinates;
-import ru.danmax.soa_lab2_first_service.entities.Dragon;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CoordinatesRequestDto {
     @NotNull
     private int x;
