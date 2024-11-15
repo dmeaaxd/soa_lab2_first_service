@@ -158,9 +158,9 @@ public class DragonRepository {
     public static List<Dragon> findAllFilterByKiller(String passportId) throws SQLException {
         Connection connection = DataBase.getConnection();
         ResultSet rs = connection.createStatement().executeQuery(
-                "SELECT dragons.* FROM dragons" +
-                " JOIN persons ON killer_id = persons.id " +
-                "WHERE passport_id < '" + passportId + "'");
+                "SELECT dragons.* FROM dragons " +
+                        "JOIN public.persons p on p.id = dragons.killer_id " +
+                        "WHERE passport_id < '" + passportId + "';");
 
         List<Dragon> dragons = new ArrayList<>();
         while (rs.next()) {

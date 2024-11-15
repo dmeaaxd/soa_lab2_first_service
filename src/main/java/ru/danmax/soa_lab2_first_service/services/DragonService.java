@@ -159,7 +159,7 @@ public class DragonService {
 
     public static List<DragonResponseDto> filterByKiller(String passportId) throws SQLException, IllegalArgumentException {
         if (passportId == null) {
-            throw new IllegalArgumentException("character является обязательным параметром");
+            throw new IllegalArgumentException("passportId является обязательным параметром");
         }
 
         List<Dragon> dragons = DragonRepository.findAllFilterByKiller(passportId);

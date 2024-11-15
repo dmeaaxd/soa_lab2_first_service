@@ -16,14 +16,6 @@ import java.sql.SQLException;
 
 public class Test {
     public static void main(String[] args) throws SQLException, EntityAlreadyExists {
-//        DragonRequestDto dragonRequestDto = DragonRequestDto.builder()
-//                .name("test")
-//                .age(10)
-//                .coordinatesRequestDto(CoordinatesRequestDto.builder()
-//                        .x(1)
-//                        .y(1.3F)
-//                        .build())
-//                .build();
-//        DragonService.addDragon(dragonRequestDto);
+        System.out.println(DragonService.filterByKiller("a123123123123123123"));
     }
 }
