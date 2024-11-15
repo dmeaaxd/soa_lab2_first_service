@@ -43,8 +43,8 @@ CREATE TABLE persons (
 
 CREATE TABLE coordinates (
     id SERIAL PRIMARY KEY,
-    x INT,
-    y FLOAT NOT NULL
+    x INT NOT NULL,
+    y FLOAT
     );
 
 CREATE TABLE dragons (

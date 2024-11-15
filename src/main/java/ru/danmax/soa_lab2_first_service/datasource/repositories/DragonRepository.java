@@ -103,7 +103,7 @@ public class DragonRepository {
         Connection connection = DataBase.getConnection();
 
         String query = "UPDATE " + dragon.getTableName() + " SET \n";
-        query += "name = " + dragon.getName() + ", ";
+        query += "\"name\" = " + dragon.getName() + ", ";
         query += "age = " + dragon.getAge() + ", ";
         query += "color = " + dragon.getColor() + ", ";
         query += "dragon_type = " + dragon.getDragonType() + ", ";
