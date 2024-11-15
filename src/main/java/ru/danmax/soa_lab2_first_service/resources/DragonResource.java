@@ -193,7 +193,7 @@ public class DragonResource {
 
     @GET
     @Path("filter-by-killer")
-    public Response filterByKiller(@QueryParam("passportId") String passportId) {
+    public Response filterByKiller(@QueryParam("passport-id") String passportId) {
         try {
             return Response.ok(DragonService.filterByKiller(passportId)).build();
         } catch (SQLException sqlException) {
@@ -203,6 +203,15 @@ public class DragonResource {
                             .builder()
                             .code(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())
                             .message(sqlException.getMessage())
+                            .build())
+                    .build();
+        } catch (IllegalArgumentException illegalArgumentException) {
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity(ErrorResponseDto
+                            .builder()
+                            .code(Response.Status.BAD_REQUEST.getStatusCode())
+                            .message(illegalArgumentException.getMessage())
                             .build())
                     .build();
         }

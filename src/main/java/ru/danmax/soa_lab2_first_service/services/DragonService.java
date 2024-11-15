@@ -157,7 +157,11 @@ public class DragonService {
     }
 
 
-    public static List<DragonResponseDto> filterByKiller(String passportId) throws SQLException {
+    public static List<DragonResponseDto> filterByKiller(String passportId) throws SQLException, IllegalArgumentException {
+        if (passportId == null) {
+            throw new IllegalArgumentException("character является обязательным параметром");
+        }
+
         List<Dragon> dragons = DragonRepository.findAllFilterByKiller(passportId);
         List<DragonResponseDto> dragonResponseDtos = new ArrayList<>();
         for (Dragon dragon : dragons) {
@@ -167,6 +171,9 @@ public class DragonService {
     }
 
     public static List<DragonResponseDto> filterByCharacter(String character) throws IllegalArgumentException, SQLException {
+        if (character == null) {
+            throw new IllegalArgumentException("character является обязательным параметром");
+        }
         try{
             List<Dragon> dragons = DragonRepository.findAllFilterByCharacter(DragonCharacter.valueOf(character));
             List<DragonResponseDto> dragonResponseDtos = new ArrayList<>();
