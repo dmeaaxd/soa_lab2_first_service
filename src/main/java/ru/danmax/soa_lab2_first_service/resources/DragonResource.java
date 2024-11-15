@@ -190,16 +190,47 @@ public class DragonResource {
                     .build();
         }
     }
-//
-//    @GET
-//    @Path("filter-by-killer")
-//    public List<Dragon> filterByKiller(@QueryParam("passportId") Long passportId) {
-//        return dragonService.filterByKiller(passportId);
-//    }
-//
-//    @GET
-//    @Path("filter-by-character")
-//    public List<Dragon> filterByCharacter(@QueryParam("character") DragonCharacter character) {
-//        return dragonService.filterByCharacter(character);
-//    }
+
+    @GET
+    @Path("filter-by-killer")
+    public Response filterByKiller(@QueryParam("passportId") String passportId) {
+        try {
+            return Response.ok(DragonService.filterByKiller(passportId)).build();
+        } catch (SQLException sqlException) {
+            return Response
+                    .status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(ErrorResponseDto
+                            .builder()
+                            .code(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())
+                            .message(sqlException.getMessage())
+                            .build())
+                    .build();
+        }
+    }
+
+    @GET
+    @Path("filter-by-character")
+    public Response filterByCharacter(@QueryParam("character") String character) {
+        try {
+            return Response.ok(DragonService.filterByCharacter(character)).build();
+        } catch (SQLException sqlException) {
+            return Response
+                    .status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(ErrorResponseDto
+                            .builder()
+                            .code(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())
+                            .message(sqlException.getMessage())
+                            .build())
+                    .build();
+        } catch (IllegalArgumentException illegalArgumentException) {
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity(ErrorResponseDto
+                            .builder()
+                            .code(Response.Status.BAD_REQUEST.getStatusCode())
+                            .message(illegalArgumentException.getMessage())
+                            .build())
+                    .build();
+        }
+    }
 }

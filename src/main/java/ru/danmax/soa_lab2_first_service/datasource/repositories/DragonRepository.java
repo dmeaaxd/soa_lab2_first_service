@@ -2,6 +2,7 @@ package ru.danmax.soa_lab2_first_service.datasource.repositories;
 
 import ru.danmax.soa_lab2_first_service.datasource.DataBase;
 import ru.danmax.soa_lab2_first_service.entities.Dragon;
+import ru.danmax.soa_lab2_first_service.entities.enums.DragonCharacter;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -142,6 +143,39 @@ public class DragonRepository {
     public static List<Dragon> findAllByNameSubstring(String name) throws SQLException {
         Connection connection = DataBase.getConnection();
         ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM " + new Dragon().getTableName() + " WHERE name LIKE '" + name + "%'");
+
+        List<Dragon> dragons = new ArrayList<>();
+        while (rs.next()) {
+            Dragon dragon = createDragonFromResultSet(rs);
+            if (dragon != null) {
+                dragons.add(dragon);
+            }
+        }
+
+        return dragons;
+    }
+
+    public static List<Dragon> findAllFilterByKiller(String passportId) throws SQLException {
+        Connection connection = DataBase.getConnection();
+        ResultSet rs = connection.createStatement().executeQuery(
+                "SELECT dragons.* FROM dragons" +
+                " JOIN persons ON killer_id = persons.id " +
+                "WHERE passport_id < '" + passportId + "'");
+
+        List<Dragon> dragons = new ArrayList<>();
+        while (rs.next()) {
+            Dragon dragon = createDragonFromResultSet(rs);
+            if (dragon != null) {
+                dragons.add(dragon);
+            }
+        }
+
+        return dragons;
+    }
+
+    public static List<Dragon> findAllFilterByCharacter(DragonCharacter dragonCharacter) throws SQLException {
+        Connection connection = DataBase.getConnection();
+        ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM dragons WHERE character > '" + dragonCharacter.toString() + "';");
 
         List<Dragon> dragons = new ArrayList<>();
         while (rs.next()) {

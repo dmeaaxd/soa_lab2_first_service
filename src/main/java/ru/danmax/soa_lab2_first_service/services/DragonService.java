@@ -157,11 +157,26 @@ public class DragonService {
     }
 
 
-    public static List<Dragon> filterByKiller(Long passportId) {
-        return null;
+    public static List<DragonResponseDto> filterByKiller(String passportId) throws SQLException {
+        List<Dragon> dragons = DragonRepository.findAllFilterByKiller(passportId);
+        List<DragonResponseDto> dragonResponseDtos = new ArrayList<>();
+        for (Dragon dragon : dragons) {
+            dragonResponseDtos.add(DragonResponseDto.convertToDTO(dragon));
+        }
+        return dragonResponseDtos;
     }
 
-    public static List<Dragon> filterByCharacter(DragonCharacter character) {
-        return null;
+    public static List<DragonResponseDto> filterByCharacter(String character) throws IllegalArgumentException, SQLException {
+        try{
+            List<Dragon> dragons = DragonRepository.findAllFilterByCharacter(DragonCharacter.valueOf(character));
+            List<DragonResponseDto> dragonResponseDtos = new ArrayList<>();
+            for (Dragon dragon : dragons) {
+                dragonResponseDtos.add(DragonResponseDto.convertToDTO(dragon));
+            }
+            return dragonResponseDtos;
+        } catch (IllegalArgumentException illegalArgumentException){
+            throw new IllegalArgumentException("character должно быть одним из enum DragonCharacter");
+        }
+
     }
 }
