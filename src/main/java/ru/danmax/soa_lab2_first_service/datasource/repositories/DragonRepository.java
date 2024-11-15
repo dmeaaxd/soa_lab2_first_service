@@ -64,7 +64,7 @@ public class DragonRepository {
         return dragon;
     }
 
-    public static Dragon save(Dragon dragon) throws SQLException, IllegalArgumentException {
+    public static Dragon insert(Dragon dragon) throws SQLException, IllegalArgumentException {
         if (dragon == null) {
             throw new IllegalArgumentException("dragon can't be null");
         }
@@ -102,6 +102,10 @@ public class DragonRepository {
         return resultDragon;
 
     }
+
+
+
+
 
     private static Dragon createDragonFromResultSet(ResultSet rs){
         Dragon dragon = null;

@@ -3,7 +3,6 @@ package ru.danmax.soa_lab2_first_service.services;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
 import ru.danmax.soa_lab2_first_service.datasource.DataBase;
 import ru.danmax.soa_lab2_first_service.datasource.repositories.CoordinatesRepository;
 import ru.danmax.soa_lab2_first_service.datasource.repositories.DragonRepository;
@@ -50,7 +49,7 @@ public class DragonService {
             }
 
             // Сохранить дракона в БД
-            DragonRepository.save(dragon);
+            DragonRepository.insert(dragon);
 
             connection.commit();
         } catch (SQLException | IllegalArgumentException exception) {

@@ -26,7 +26,7 @@ public class DragonRequestDto {
     private String name;
 
     @NotNull(message = "Coordinates не может быть пустым")
-    private CoordinatesRequestDto coordinatesRequestDto;
+    private CoordinatesRequestDto coordinates;
 
     @NotNull(message = "Age не может быть пустым")
     @Min(value = 1, message = "Age не может быть меньше 1")
@@ -47,7 +47,7 @@ public class DragonRequestDto {
         if (dragonRequestDto == null) return null;
         return Dragon.builder()
                 .name(dragonRequestDto.getName())
-                .coordinates(CoordinatesRequestDto.convertToObject(dragonRequestDto.getCoordinatesRequestDto()))
+                .coordinates(CoordinatesRequestDto.convertToObject(dragonRequestDto.getCoordinates()))
                 .age(dragonRequestDto.getAge())
                 .color(dragonRequestDto.getColor() != null ? Color.valueOf(dragonRequestDto.getColor()) : null)
                 .dragonType(dragonRequestDto.getType() != null ? DragonType.valueOf(dragonRequestDto.getType()) : null)
