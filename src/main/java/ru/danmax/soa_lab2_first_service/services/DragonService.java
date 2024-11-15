@@ -4,6 +4,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import ru.danmax.soa_lab2_first_service.datasource.DataBase;
 import ru.danmax.soa_lab2_first_service.datasource.repositories.CoordinatesRepository;
 import ru.danmax.soa_lab2_first_service.datasource.repositories.DragonRepository;
 import ru.danmax.soa_lab2_first_service.dto.request.DragonRequestDto;
@@ -11,6 +12,7 @@ import ru.danmax.soa_lab2_first_service.entities.Dragon;
 import ru.danmax.soa_lab2_first_service.entities.enums.DragonCharacter;
 import ru.danmax.soa_lab2_first_service.exceptions.EntityAlreadyExists;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
@@ -37,13 +39,25 @@ public class DragonService {
         Dragon dragon = DragonRequestDto.convertToObject(dragonRequestDto);
         System.out.println(dragon);
 
-        // Сохранить координаты дракона в БД
-        if (dragon.getCoordinates().getId() == 0){
-            dragon.setCoordinates(CoordinatesRepository.save(dragon.getCoordinates()));
-        }
+        // Транзакция добавления дракона в БД
+        Connection connection = DataBase.getConnection();
+        try {
+            connection.setAutoCommit(false);
 
-        // Сохранить дракона в БД
-        DragonRepository.save(dragon);
+            // Сохранить координаты дракона в БД
+            if (dragon.getCoordinates().getId() == 0) {
+                dragon.setCoordinates(CoordinatesRepository.save(dragon.getCoordinates()));
+            }
+
+            // Сохранить дракона в БД
+            DragonRepository.save(dragon);
+
+            connection.commit();
+        } catch (SQLException | IllegalArgumentException exception) {
+            connection.rollback();
+            connection.setAutoCommit(true);
+            throw exception;
+        }
     }
 
 

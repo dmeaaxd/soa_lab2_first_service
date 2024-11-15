@@ -1,6 +1,5 @@
 package ru.danmax.soa_lab2_first_service.datasource.repositories;
 
-import ru.danmax.soa_lab2_first_service.entities.Coordinates;
 import ru.danmax.soa_lab2_first_service.entities.Dragon;
 import ru.danmax.soa_lab2_first_service.datasource.DataBase;
 
@@ -81,7 +80,10 @@ public class DragonRepository {
         statement.setString(4, dragon.getColor() != null ? dragon.getColor().toString() : null);
         statement.setString(5, dragon.getDragonType() != null ? dragon.getDragonType().toString() : null);
         statement.setString(6, dragon.getCharacter() != null ? dragon.getCharacter().toString() : null);
-        statement.setInt(7, dragon.getKiller() != null ? dragon.getKiller().getId() : 6);
+
+        if (dragon.getKiller() != null) statement.setInt(7, dragon.getKiller().getId());
+        else statement.setNull(7, Types.INTEGER);
+
 
         int affectedRows = statement.executeUpdate();
 

@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.danmax.soa_lab2_first_service.dto.validators.ValueOfEnum;
 import ru.danmax.soa_lab2_first_service.entities.Dragon;
+import ru.danmax.soa_lab2_first_service.entities.Person;
 import ru.danmax.soa_lab2_first_service.entities.enums.Color;
 import ru.danmax.soa_lab2_first_service.entities.enums.DragonCharacter;
 import ru.danmax.soa_lab2_first_service.entities.enums.DragonType;
@@ -40,6 +41,8 @@ public class DragonRequestDto {
     @ValueOfEnum(enumClass = DragonCharacter.class, message = "character должно быть одним из enum DragonCharacter")
     private String character;
 
+    private Integer killer;
+
     public static Dragon convertToObject(DragonRequestDto dragonRequestDto) {
         if (dragonRequestDto == null) return null;
         return Dragon.builder()
@@ -49,6 +52,7 @@ public class DragonRequestDto {
                 .color(dragonRequestDto.getColor() != null ? Color.valueOf(dragonRequestDto.getColor()) : null)
                 .dragonType(dragonRequestDto.getType() != null ? DragonType.valueOf(dragonRequestDto.getType()) : null)
                 .character(dragonRequestDto.getCharacter() != null ? DragonCharacter.valueOf(dragonRequestDto.getCharacter()) : null)
+                .killer(dragonRequestDto.killer != null ? Person.builder().id(dragonRequestDto.getKiller()).build() : null)
                 .build();
     }
 }
