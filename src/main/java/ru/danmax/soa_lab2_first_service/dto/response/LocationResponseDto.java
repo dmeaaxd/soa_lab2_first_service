@@ -1,6 +1,5 @@
 package ru.danmax.soa_lab2_first_service.dto.response;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

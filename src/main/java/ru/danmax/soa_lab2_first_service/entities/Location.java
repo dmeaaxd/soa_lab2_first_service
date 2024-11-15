@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.zip.DeflaterOutputStream;
 
 @Data
 @Builder

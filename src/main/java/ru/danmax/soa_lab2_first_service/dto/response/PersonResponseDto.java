@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.danmax.soa_lab2_first_service.entities.Dragon;
 import ru.danmax.soa_lab2_first_service.entities.Person;
 
 @Data

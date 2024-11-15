@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.danmax.soa_lab2_first_service.entities.enums.Color;
 import ru.danmax.soa_lab2_first_service.entities.enums.DragonCharacter;
 import ru.danmax.soa_lab2_first_service.entities.enums.DragonType;
-import ru.danmax.soa_lab2_first_service.entities.enums.Color;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

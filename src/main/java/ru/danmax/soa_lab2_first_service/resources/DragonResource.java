@@ -5,15 +5,11 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import ru.danmax.soa_lab2_first_service.dto.request.DragonRequestDto;
-import ru.danmax.soa_lab2_first_service.dto.response.DragonResponseDto;
 import ru.danmax.soa_lab2_first_service.dto.response.ErrorResponseDto;
-import ru.danmax.soa_lab2_first_service.entities.Dragon;
 import ru.danmax.soa_lab2_first_service.exceptions.EntityAlreadyExists;
 import ru.danmax.soa_lab2_first_service.services.DragonService;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 

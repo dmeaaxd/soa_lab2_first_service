@@ -1,14 +1,11 @@
 package ru.danmax.soa_lab2_first_service.datasource.repositories;
 
-import ru.danmax.soa_lab2_first_service.entities.Coordinates;
-import ru.danmax.soa_lab2_first_service.entities.Dragon;
 import ru.danmax.soa_lab2_first_service.datasource.DataBase;
-
+import ru.danmax.soa_lab2_first_service.entities.Dragon;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static ru.danmax.soa_lab2_first_service.datasource.repositories.additional.AdditionalMethods.*;
 
