@@ -141,7 +141,7 @@ public class DragonRepository {
 
     public static List<Dragon> findAllByNameSubstring(String name) throws SQLException {
         Connection connection = DataBase.getConnection();
-        ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM " + new Dragon().getTableName() + " WHERE name LIKE '%" + name + "%'");
+        ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM " + new Dragon().getTableName() + " WHERE name LIKE '" + name + "%'");
 
         List<Dragon> dragons = new ArrayList<>();
         while (rs.next()) {
