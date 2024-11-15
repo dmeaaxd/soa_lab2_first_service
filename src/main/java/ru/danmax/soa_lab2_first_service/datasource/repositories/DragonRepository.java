@@ -77,41 +77,60 @@ public class DragonRepository {
         if (dragon.getKiller() != null) statement.setInt(7, dragon.getKiller().getId());
         else statement.setNull(7, Types.INTEGER);
 
-
         int affectedRows = statement.executeUpdate();
 
         if (affectedRows > 0) {
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     int id = generatedKeys.getInt(1);
-                    System.out.println("Inserted dragon record's ID: " + id);
                     resultDragon = DragonRepository.findById(id);
                 }
             }
         }
         else {
-            throw new SQLException("Could not insert dragon record");
+            throw new SQLException("Could not update dragon record");
         }
         return resultDragon;
-
     }
 
     public static Dragon update(Dragon dragon) throws SQLException, IllegalArgumentException{
         if (dragon == null) {
             throw new IllegalArgumentException("Dragon cannot be null");
         }
+        Dragon resultDragon = null;
         Connection connection = DataBase.getConnection();
 
         String query = "UPDATE " + dragon.getTableName() + " SET \n";
-        query += "\"name\" = " + dragon.getName() + ", ";
-        query += "age = " + dragon.getAge() + ", ";
-        query += "color = " + dragon.getColor() + ", ";
-        query += "dragon_type = " + dragon.getDragonType() + ", ";
-        query += "character = " + dragon.getCharacter() + ", ";
-        query += "killer_id = " + dragon.getKiller().getId() + ", ";
+        query += "\"name\" = ?, \n";
+        query += "age = ?, \n";
+        query += "color = ?, \n";
+        query += "dragon_type = ?, \n";
+        query += "character = ?, \n";
+        query += "killer_id = ? \n";
 
-        connection.createStatement().execute(query);
-        return findById(dragon.getId());
+        PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        statement.setString(1, dragon.getName());
+        statement.setInt(2, dragon.getAge());
+        statement.setString(3, dragon.getColor() != null ? dragon.getColor().toString() : null);
+        statement.setString(4, dragon.getDragonType() != null ? dragon.getDragonType().toString() : null);
+        statement.setString(5, dragon.getCharacter() != null ? dragon.getCharacter().toString() : null);
+
+        if (dragon.getKiller() != null) statement.setInt(6, dragon.getKiller().getId());
+        else statement.setNull(7, Types.INTEGER);
+
+        int affectedRows = statement.executeUpdate();
+        if (affectedRows > 0) {
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int id = generatedKeys.getInt(1);
+                    resultDragon = DragonRepository.findById(id);
+                }
+            }
+        }
+        else {
+            throw new SQLException("Could not update dragon record");
+        }
+        return resultDragon;
     }
 
 

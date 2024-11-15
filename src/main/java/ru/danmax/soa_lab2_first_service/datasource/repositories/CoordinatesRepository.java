@@ -35,7 +35,6 @@ public class CoordinatesRepository {
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     int id = generatedKeys.getInt(1);
-                    System.out.println("Inserted coordinates record's ID: " + id);
                     resultCoordinates = CoordinatesRepository.findById(id);
                 }
             }
