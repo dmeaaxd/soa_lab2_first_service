@@ -19,6 +19,7 @@ public class RestConfiguration extends Application {
         Class.forName("org.postgresql.Driver");
         singletons.add(new HelloWorldResource());
         singletons.add(new DragonResource());
+        singletons.add(new CorsFilter());
     }
 
     @Override
