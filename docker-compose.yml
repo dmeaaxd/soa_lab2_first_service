@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  my-app:
+    build: .
+    restart: always
+    volumes:
+      - .:/app
+    ports:
+      - "8085:8080"
+      - "4949:4848"
