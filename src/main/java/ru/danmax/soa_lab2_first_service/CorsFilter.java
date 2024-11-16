@@ -3,11 +3,13 @@ package ru.danmax.soa_lab2_first_service;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerResponseContext;
 import jakarta.ws.rs.container.ContainerResponseFilter;
+import jakarta.ws.rs.container.PreMatching;
 import jakarta.ws.rs.ext.Provider;
 
 import java.io.IOException;
 
 @Provider
+@PreMatching
 public class CorsFilter implements ContainerResponseFilter {
 
     @Override
