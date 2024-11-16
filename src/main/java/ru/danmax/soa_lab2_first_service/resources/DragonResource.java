@@ -28,25 +28,27 @@ public class DragonResource {
             @QueryParam("size") Integer size
     ) {
         try {
-            return Response.ok(DragonService.getDragons(sort, filter, page, size)).build();
+            return addCorsHeaders(Response
+                    .ok(DragonService.getDragons(sort, filter, page, size)))
+                    .build();
         } catch (SQLException sqlException) {
-            return Response
+            Response.ResponseBuilder responseBuilder = Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(ErrorResponseDto
                             .builder()
                             .code(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())
                             .message(sqlException.getMessage())
-                            .build())
-                    .build();
+                            .build());
+            return addCorsHeaders(responseBuilder).build();
         } catch (IllegalArgumentException illegalArgumentException) {
-            return Response
+            Response.ResponseBuilder responseBuilder = Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity(ErrorResponseDto
                             .builder()
                             .code(Response.Status.BAD_REQUEST.getStatusCode())
                             .message(illegalArgumentException.getMessage())
-                            .build())
-                    .build();
+                            .build());
+            return addCorsHeaders(responseBuilder).build();
         }
     }
 
@@ -54,34 +56,34 @@ public class DragonResource {
     public Response addDragon(DragonRequestDto dragonRequestDto) {
         try {
             DragonService.addDragon(dragonRequestDto);
-            return Response.status(Response.Status.CREATED).build();
+            return addCorsHeaders(Response.status(Response.Status.CREATED)).build();
         } catch (SQLException sqlException) {
-            return Response
+            Response.ResponseBuilder responseBuilder = Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(ErrorResponseDto
                             .builder()
                             .code(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())
                             .message(sqlException.getMessage())
-                            .build())
-                    .build();
+                            .build());
+            return addCorsHeaders(responseBuilder).build();
         } catch (IllegalArgumentException illegalArgumentException) {
-            return Response
+            Response.ResponseBuilder responseBuilder = Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity(ErrorResponseDto
                             .builder()
                             .code(Response.Status.BAD_REQUEST.getStatusCode())
                             .message(illegalArgumentException.getMessage())
-                            .build())
-                    .build();
+                            .build());
+            return addCorsHeaders(responseBuilder).build();
         } catch (EntityAlreadyExists entityAlreadyExists){
-            return Response
+            Response.ResponseBuilder responseBuilder = Response
                     .status(Response.Status.CONFLICT)
                     .entity(ErrorResponseDto
                             .builder()
                             .code(Response.Status.CONFLICT.getStatusCode())
                             .message(entityAlreadyExists.getMessage())
-                            .build())
-                    .build();
+                            .build());
+            return addCorsHeaders(responseBuilder).build();
         }
     }
 
@@ -89,25 +91,25 @@ public class DragonResource {
     @Path("/{id}")
     public Response getDragonById(@PathParam("id") Integer id){
         try {
-            return Response.ok(DragonService.getDragonById(id)).build();
+            return addCorsHeaders(Response.ok(DragonService.getDragonById(id))).build();
         } catch (SQLException sqlException) {
-            return Response
+            Response.ResponseBuilder responseBuilder = Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(ErrorResponseDto
                             .builder()
                             .code(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())
                             .message(sqlException.getMessage())
-                            .build())
-                    .build();
+                            .build());
+            return addCorsHeaders(responseBuilder).build();
         } catch (NoSuchElementException noSuchElementException) {
-            return Response
+            Response.ResponseBuilder responseBuilder = Response
                     .status(Response.Status.NOT_FOUND)
                     .entity(ErrorResponseDto
                             .builder()
                             .code(Response.Status.NOT_FOUND.getStatusCode())
                             .message(noSuchElementException.getMessage())
-                            .build())
-                    .build();
+                            .build());
+            return addCorsHeaders(responseBuilder).build();
         }
     }
 
@@ -116,34 +118,34 @@ public class DragonResource {
     public Response updateDragon(@PathParam("id") Integer id, DragonRequestDto dragonRequestDto) {
         try {
             DragonService.updateDragon(id, dragonRequestDto);
-            return Response.ok().build();
+            return addCorsHeaders(Response.ok()).build();
         } catch (SQLException sqlException) {
-            return Response
+            Response.ResponseBuilder responseBuilder = Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(ErrorResponseDto
                             .builder()
                             .code(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())
                             .message(sqlException.getMessage())
-                            .build())
-                    .build();
+                            .build());
+            return addCorsHeaders(responseBuilder).build();
         } catch (IllegalArgumentException illegalArgumentException) {
-            return Response
+            Response.ResponseBuilder responseBuilder = Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity(ErrorResponseDto
                             .builder()
                             .code(Response.Status.BAD_REQUEST.getStatusCode())
                             .message(illegalArgumentException.getMessage())
-                            .build())
-                    .build();
+                            .build());
+            return addCorsHeaders(responseBuilder).build();
         } catch (NoSuchElementException noSuchElementException){
-            return Response
+            Response.ResponseBuilder responseBuilder = Response
                     .status(Response.Status.NOT_FOUND)
                     .entity(ErrorResponseDto
                             .builder()
                             .code(Response.Status.NOT_FOUND.getStatusCode())
                             .message(noSuchElementException.getMessage())
-                            .build())
-                    .build();
+                            .build());
+            return addCorsHeaders(responseBuilder).build();
         }
     }
 
@@ -152,25 +154,25 @@ public class DragonResource {
     public Response deleteDragon(@PathParam("id") Integer id) {
         try {
             DragonService.deleteDragon(id);
-            return Response.ok().build();
+            return addCorsHeaders(Response.ok()).build();
         } catch (SQLException sqlException) {
-            return Response
+            Response.ResponseBuilder responseBuilder = Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(ErrorResponseDto
                             .builder()
                             .code(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())
                             .message(sqlException.getMessage())
-                            .build())
-                    .build();
+                            .build());
+            return addCorsHeaders(responseBuilder).build();
         } catch (NoSuchElementException noSuchElementException){
-            return Response
+            Response.ResponseBuilder responseBuilder = Response
                     .status(Response.Status.NOT_FOUND)
                     .entity(ErrorResponseDto
                             .builder()
                             .code(Response.Status.NOT_FOUND.getStatusCode())
                             .message(noSuchElementException.getMessage())
-                            .build())
-                    .build();
+                            .build());
+            return addCorsHeaders(responseBuilder).build();
         }
     }
 
@@ -178,16 +180,16 @@ public class DragonResource {
     @Path("search-by-name")
     public Response searchByName(@QueryParam("name") String name) {
         try {
-            return Response.ok(DragonService.searchByName(name)).build();
+            return addCorsHeaders(Response.ok(DragonService.searchByName(name))).build();
         } catch (SQLException sqlException) {
-            return Response
+            Response.ResponseBuilder responseBuilder = Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(ErrorResponseDto
                             .builder()
                             .code(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())
                             .message(sqlException.getMessage())
-                            .build())
-                    .build();
+                            .build());
+            return addCorsHeaders(responseBuilder).build();
         }
     }
 
@@ -195,25 +197,27 @@ public class DragonResource {
     @Path("filter-by-killer")
     public Response filterByKiller(@QueryParam("passport-id") String passportId) {
         try {
-            return Response.ok(DragonService.filterByKiller(passportId)).build();
+            return addCorsHeaders(Response
+                    .ok(DragonService.filterByKiller(passportId)))
+                    .build();
         } catch (SQLException sqlException) {
-            return Response
+            Response.ResponseBuilder responseBuilder = Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(ErrorResponseDto
                             .builder()
                             .code(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())
                             .message(sqlException.getMessage())
-                            .build())
-                    .build();
+                            .build());
+            return addCorsHeaders(responseBuilder).build();
         } catch (IllegalArgumentException illegalArgumentException) {
-            return Response
+            Response.ResponseBuilder responseBuilder = Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity(ErrorResponseDto
                             .builder()
                             .code(Response.Status.BAD_REQUEST.getStatusCode())
                             .message(illegalArgumentException.getMessage())
-                            .build())
-                    .build();
+                            .build());
+            return addCorsHeaders(responseBuilder).build();
         }
     }
 
@@ -221,25 +225,35 @@ public class DragonResource {
     @Path("filter-by-character")
     public Response filterByCharacter(@QueryParam("character") String character) {
         try {
-            return Response.ok(DragonService.filterByCharacter(character)).build();
+            return addCorsHeaders(Response.ok(DragonService.filterByCharacter(character))).build();
         } catch (SQLException sqlException) {
-            return Response
+            Response.ResponseBuilder responseBuilder = Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(ErrorResponseDto
                             .builder()
                             .code(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())
                             .message(sqlException.getMessage())
-                            .build())
-                    .build();
+                            .build());
+            return addCorsHeaders(responseBuilder).build();
         } catch (IllegalArgumentException illegalArgumentException) {
-            return Response
+            Response.ResponseBuilder responseBuilder = Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity(ErrorResponseDto
                             .builder()
                             .code(Response.Status.BAD_REQUEST.getStatusCode())
                             .message(illegalArgumentException.getMessage())
-                            .build())
-                    .build();
+                            .build());
+            return addCorsHeaders(responseBuilder).build();
         }
+    }
+
+    private Response.ResponseBuilder addCorsHeaders(Response.ResponseBuilder responseBuilder){
+        return responseBuilder
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Credentials", "true")
+                .header("Access-Control-Allow-Headers",
+                        "origin, content-type, accept, authorization")
+                .header("Access-Control-Allow-Methods",
+                        "GET, POST, PUT, DELETE, OPTIONS, HEAD");
     }
 }
