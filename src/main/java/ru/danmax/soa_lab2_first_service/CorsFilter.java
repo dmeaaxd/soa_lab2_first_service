@@ -14,7 +14,7 @@ public class CorsFilter implements ContainerResponseFilter {
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
         String origin = requestContext.getHeaderString("Origin");
         if ((origin != null)
-                && origin.startsWith("http://localhost")) {
+                && origin.startsWith("http://")) {
             allowExceptionCors(requestContext, responseContext, origin);
         }
     }
