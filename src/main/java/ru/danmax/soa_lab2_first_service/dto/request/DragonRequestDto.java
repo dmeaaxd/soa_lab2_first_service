@@ -9,11 +9,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.danmax.soa_lab2_first_service.dto.validators.ValueOfEnum;
-import ru.danmax.soa_lab2_first_service.entities.Dragon;
-import ru.danmax.soa_lab2_first_service.entities.Person;
-import ru.danmax.soa_lab2_first_service.entities.enums.Color;
-import ru.danmax.soa_lab2_first_service.entities.enums.DragonCharacter;
-import ru.danmax.soa_lab2_first_service.entities.enums.DragonType;
+import ru.danmax.soa_lab2_first_service.entity.Coordinates;
+import ru.danmax.soa_lab2_first_service.entity.Dragon;
+import ru.danmax.soa_lab2_first_service.entity.Person;
+import ru.danmax.soa_lab2_first_service.entity.enums.Color;
+import ru.danmax.soa_lab2_first_service.entity.enums.DragonCharacter;
+import ru.danmax.soa_lab2_first_service.entity.enums.DragonType;
 
 @Data
 @Builder
@@ -43,16 +44,32 @@ public class DragonRequestDto {
 
     private Integer killer;
 
-    public static Dragon convertToObject(DragonRequestDto dragonRequestDto) {
+    public static Dragon toObject(DragonRequestDto dragonRequestDto) {
         if (dragonRequestDto == null) return null;
         return Dragon.builder()
                 .name(dragonRequestDto.getName())
-                .coordinates(CoordinatesRequestDto.convertToObject(dragonRequestDto.getCoordinates()))
+                .coordinates(
+                        Coordinates.builder()
+                                .x(dragonRequestDto.getCoordinates().getX())
+                                .y(dragonRequestDto.getCoordinates().getY()).build()
+                )
                 .age(dragonRequestDto.getAge())
                 .color(dragonRequestDto.getColor() != null ? Color.valueOf(dragonRequestDto.getColor()) : null)
                 .dragonType(dragonRequestDto.getType() != null ? DragonType.valueOf(dragonRequestDto.getType()) : null)
                 .character(dragonRequestDto.getCharacter() != null ? DragonCharacter.valueOf(dragonRequestDto.getCharacter()) : null)
-                .killer(dragonRequestDto.killer != null ? Person.builder().id(dragonRequestDto.getKiller()).build() : null)
+                .killer(dragonRequestDto.getKiller() != null ? Person.builder().id(dragonRequestDto.getKiller()).build() : null)
                 .build();
     }
+
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    static class CoordinatesRequestDto {
+        @NotNull
+        private Integer x;
+        private Float y;
+    }
+
 }
