@@ -39,7 +39,6 @@ public class FilterParser {
             // Сохраняем исходные индексы для дальнейшей замены
             int start=matcher.start();
             int end=matcher.end();
-            String match = filter.substring(start,end);
 
             //Проверяем найденный фильтр
             String field = matcher.group(1);
