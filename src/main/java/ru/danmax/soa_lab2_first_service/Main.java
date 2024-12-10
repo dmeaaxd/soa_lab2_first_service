@@ -1,10 +1,14 @@
 package ru.danmax.soa_lab2_first_service;
 
 import ru.danmax.soa_lab2_first_service.service.parser.FilterParser;
+import ru.danmax.soa_lab2_first_service.service.parser.SortParser;
 
 public class Main {
     public static void main(String[] args) {
-        String filter = "a eq 10";
-        System.out.println(FilterParser.parseFilter(filter));
+//        String filter = "((age eq 10) and (id eq 23))";
+//        System.out.println(FilterParser.parse(filter));
+
+        String sort = "drop: database, id: asc, name: desc";
+        System.out.println(SortParser.parse(sort));
     }
 }

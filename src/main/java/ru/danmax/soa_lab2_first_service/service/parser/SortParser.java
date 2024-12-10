@@ -13,7 +13,7 @@ public class SortParser {
     }
 
     private static void validateExtraCharacter(String sort) throws IllegalArgumentException {
-        sort = sort.replaceAll("(\\w*):\\s*(\\w*)", " ").replaceAll(" ", "");
+        sort = sort.replaceAll("(\\w*):\\s*(\\w*)", " ").replaceAll(",", " ").replaceAll(" ", "");
         if (!sort.isEmpty()){
             throw new IllegalArgumentException("Extra characters in sort: " + sort);
         }
