@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class FilterParser {
 
-    public static String parseFilter(String filter) throws IllegalArgumentException {
+    public static String parse(String filter) throws IllegalArgumentException {
         validateBrackets(filter);
         return recursionParseFilter(filter);
     }
