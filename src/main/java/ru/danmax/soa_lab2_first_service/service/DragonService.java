@@ -9,7 +9,7 @@ import java.util.List;
 @ApplicationScoped
 public class DragonService {
 
-    public List<DragonResponseDto> getAllDragons(
+    public List<DragonResponseDto> getDragons(
             String sort,
             String filter,
             Integer page,

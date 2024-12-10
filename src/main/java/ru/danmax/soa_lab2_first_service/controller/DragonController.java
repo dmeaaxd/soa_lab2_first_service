@@ -24,7 +24,7 @@ public class DragonController {
             @QueryParam("size") Integer size
     ) {
         return Response
-                .ok(dragonService.getAllDragons(sort, filter, page, size))
+                .ok(dragonService.getDragons(sort, filter, page, size))
                 .build();
     }
 
