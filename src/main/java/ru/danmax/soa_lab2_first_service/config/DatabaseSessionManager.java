@@ -1,4 +1,4 @@
-package ru.danmax.soa_lab2_first_service;
+package ru.danmax.soa_lab2_first_service.config;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import org.hibernate.Session;

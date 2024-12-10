@@ -1,4 +1,4 @@
-package ru.danmax.soa_lab2_first_service.filter;
+package ru.danmax.soa_lab2_first_service.config.filter;
 
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerResponseContext;
