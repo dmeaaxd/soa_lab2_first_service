@@ -2,14 +2,31 @@ package ru.danmax.soa_lab2_first_service.service.parser;
 
 import ru.danmax.soa_lab2_first_service.entity.Dragon;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FilterParser {
+    private static final String REGEX = "(\\w+)\\s+(eq|ne|lt|le|gt|ge)\\s+(\\w+)";
 
     public static String parse(String filter) throws IllegalArgumentException {
+        validateExtraCharacter(filter);
         validateBrackets(filter);
-        return recursionParseFilter(filter);
+        return parseFilterSqlString(filter);
+    }
+
+    private static void validateExtraCharacter(String filter) throws IllegalArgumentException {
+        filter = " " + filter + " ";
+        filter = filter.replaceAll(REGEX, " ")
+                .replaceAll("\\)", " ")
+                .replaceAll("\\(", " ")
+                .replaceAll(" and ", " ")
+                .replaceAll(" or ", " ")
+                .replaceAll(" ", "");
+        if (!filter.isEmpty()){
+            throw new IllegalArgumentException("Extra characters in filter: " + filter);
+        }
     }
 
     private static void validateBrackets(String filter) throws IllegalArgumentException{
@@ -30,38 +47,47 @@ public class FilterParser {
         }
     }
 
-    private static String recursionParseFilter(String filter) throws IllegalArgumentException {
-        String regex = "(\\w+)\\s+(eq|ne|lt|le|gt|ge)\\s+(\\w+)";
-        Pattern pattern = Pattern.compile(regex);
+    private static String parseFilterSqlString(String filter) throws IllegalArgumentException {
+        List<String> filterPartsWithoutFilterQuery = new ArrayList<>();
+        List<String> filterQueries = new ArrayList<>();
+
+        Pattern pattern = Pattern.compile(REGEX);
         Matcher matcher = pattern.matcher(filter);
 
-        if (matcher.find()) {
-            // Сохраняем исходные индексы для дальнейшей замены
-            int start=matcher.start();
-            int end=matcher.end();
+        String leftFilterPart;
+        String rightFilterPart = null;
+        while (matcher.find()) {
+            leftFilterPart = null;
+            rightFilterPart = null;
 
-            //Проверяем найденный фильтр
+            //Форматируем найденный filterQuery
             String field = matcher.group(1);
             String operator = matcher.group(2);
             String value = matcher.group(3);
-            String formatedMatch = validateAndFormatMatch(field, operator, value);
+            filterQueries.add(formatFilterQuery(field, operator, value));
 
-            //Обрезаем найденный фильтр и повторяем операцию
-            String leftFilterPart = filter.substring(0, start);
-            String rightFilterPart = filter.substring(end);
-            validateFilterPart(leftFilterPart);
+            //Выделяем левую и правую часть фильтра
+            leftFilterPart = filter.substring(0, matcher.start());
+            rightFilterPart = filter.substring(matcher.end());
 
-            filter = recursionParseFilter(rightFilterPart);
-            filter = leftFilterPart + formatedMatch + filter;
+            filterPartsWithoutFilterQuery.add(leftFilterPart);
+            filter = rightFilterPart;
+            matcher = pattern.matcher(rightFilterPart);
         }
-        else {
-            validateFilterPart(filter);
-        }
+        filterPartsWithoutFilterQuery.add(rightFilterPart);
 
-        return filter;
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < filterQueries.size(); i++) {
+            stringBuilder
+                    .append(filterPartsWithoutFilterQuery.get(i))
+                    .append(filterQueries.get(i));
+        }
+        stringBuilder.append(filterPartsWithoutFilterQuery.get(filterPartsWithoutFilterQuery.size() - 1));
+
+        return stringBuilder.toString();
     }
 
-    private static String validateAndFormatMatch(String field, String operator, String value) throws IllegalArgumentException {
+    private static String formatFilterQuery(String field, String operator, String value) throws IllegalArgumentException {
         if (!Dragon.DRAGON_COLUMNS.contains(field)){
             throw new IllegalArgumentException("Invalid field " + field + " in filter. Use one of " + Dragon.DRAGON_COLUMNS);
         }
@@ -117,19 +143,6 @@ public class FilterParser {
         }
 
         return field + " " + operator + " " + value;
-    }
-
-    private static void validateFilterPart(String filterPart) throws IllegalArgumentException {
-        filterPart = " " + filterPart + " ";
-        filterPart = filterPart.replaceAll("\\)", " ");
-        filterPart = filterPart.replaceAll("\\(", " ");
-        filterPart = filterPart.replaceAll(" and ", " ");
-        filterPart = filterPart.replaceAll(" or ", " ");
-        filterPart = filterPart.replaceAll(" ", "");
-
-        if (!filterPart.isEmpty()) {
-            throw new IllegalArgumentException("Filter contains extra characters");
-        }
     }
 
 }

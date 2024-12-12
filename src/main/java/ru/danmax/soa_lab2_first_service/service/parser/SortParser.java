@@ -7,21 +7,25 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SortParser {
+    private static final String REGEX = "(\\w*):\\s*(\\w*)";
+
     public static String parse(String sort) throws IllegalArgumentException {
         validateExtraCharacter(sort);
-        return parseSort(sort);
+        return parseSortSqlString(sort);
     }
 
     private static void validateExtraCharacter(String sort) throws IllegalArgumentException {
-        sort = sort.replaceAll("(\\w*):\\s*(\\w*)", " ").replaceAll(",", " ").replaceAll(" ", "");
+        sort = sort
+                .replaceAll(REGEX, " ")
+                .replaceAll(",", " ")
+                .replaceAll(" ", "");
         if (!sort.isEmpty()){
             throw new IllegalArgumentException("Extra characters in sort: " + sort);
         }
     }
 
-    private static String parseSort(String sort) throws IllegalArgumentException {
-        String regex = "(\\w*):\\s*(\\w*)";
-        Pattern pattern = Pattern.compile(regex);
+    private static String parseSortSqlString(String sort) throws IllegalArgumentException {
+        Pattern pattern = Pattern.compile(REGEX);
         Matcher matcher = pattern.matcher(sort);
 
         // Проверяем поля фильтров и их значения
