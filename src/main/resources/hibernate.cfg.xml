@@ -15,9 +15,9 @@
         <property name="hibernate.connection.useUnicode">true</property>
         <property name="current_session_context_class">thread</property>
 
-        <property name="hibernate.connection.url">jdbc:postgresql://147.45.190.117:5432/soa_DANMAX</property>
-        <property name="hibernate.connection.username">danmax</property>
-        <property name="hibernate.connection.password">SoaLabs2024</property>
+        <property name="hibernate.connection.url">url</property>
+        <property name="hibernate.connection.username">username</property>
+        <property name="hibernate.connection.password">password</property>
 
         <mapping class="ru.danmax.soa_lab2_first_service.entity.Dragon"/>
         <mapping class="ru.danmax.soa_lab2_first_service.entity.Person"/>
