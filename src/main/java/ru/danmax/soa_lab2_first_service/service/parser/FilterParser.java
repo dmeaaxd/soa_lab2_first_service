@@ -1,5 +1,7 @@
 package ru.danmax.soa_lab2_first_service.service.parser;
 
+import jakarta.ws.rs.BadRequestException;
+import jakarta.xml.bind.ValidationException;
 import ru.danmax.soa_lab2_first_service.entity.Dragon;
 
 import java.util.ArrayList;
@@ -10,13 +12,13 @@ import java.util.regex.Pattern;
 public class FilterParser {
     private static final String REGEX = "(\\w+)\\s+(eq|ne|lt|le|gt|ge)\\s+(\\w+)";
 
-    public static String parse(String filter) throws IllegalArgumentException {
+    public static String parse(String filter) throws ValidationException {
         validateExtraCharacter(filter);
         validateBrackets(filter);
         return parseFilterSqlString(filter);
     }
 
-    private static void validateExtraCharacter(String filter) throws IllegalArgumentException {
+    private static void validateExtraCharacter(String filter) throws ValidationException {
         filter = " " + filter + " ";
         filter = filter.replaceAll(REGEX, " ")
                 .replaceAll("\\)", " ")
@@ -25,11 +27,11 @@ public class FilterParser {
                 .replaceAll(" or ", " ")
                 .replaceAll(" ", "");
         if (!filter.isEmpty()){
-            throw new IllegalArgumentException("Extra characters in filter: " + filter);
+            throw new ValidationException("Extra characters in filter: " + filter);
         }
     }
 
-    private static void validateBrackets(String filter) throws IllegalArgumentException{
+    private static void validateBrackets(String filter) throws ValidationException{
         int openBracketsCount = 0;
         for (int i = 0; i < filter.length(); i++) {
             if (filter.charAt(i) == '(') {
@@ -40,14 +42,14 @@ public class FilterParser {
             }
         }
         if (openBracketsCount < 0) {
-            throw new IllegalArgumentException("Filter brackets not opened");
+            throw new ValidationException("Filter brackets not opened");
         }
         if (openBracketsCount > 0) {
-            throw new IllegalArgumentException("Filter brackets not closed");
+            throw new ValidationException("Filter brackets not closed");
         }
     }
 
-    private static String parseFilterSqlString(String filter) throws IllegalArgumentException {
+    private static String parseFilterSqlString(String filter) throws ValidationException {
         List<String> filterPartsWithoutFilterQuery = new ArrayList<>();
         List<String> filterQueries = new ArrayList<>();
 
@@ -87,9 +89,9 @@ public class FilterParser {
         return stringBuilder.toString();
     }
 
-    private static String formatFilterQuery(String field, String operator, String value) throws IllegalArgumentException {
+    private static String formatFilterQuery(String field, String operator, String value) throws ValidationException {
         if (!Dragon.DRAGON_COLUMNS.contains(field)){
-            throw new IllegalArgumentException("Invalid field " + field + " in filter. Use one of " + Dragon.DRAGON_COLUMNS);
+            throw new ValidationException("Invalid field " + field + " in filter. Use one of " + Dragon.DRAGON_COLUMNS);
         }
 
         switch (operator) {
@@ -112,7 +114,7 @@ public class FilterParser {
                 operator = ">=";
                 break;
             default:
-                throw new IllegalArgumentException("Invalid operator " + operator + " in filter");
+                throw new ValidationException("Invalid operator " + operator + " in filter");
         }
 
         String datatype = Dragon.DRAGON_COLUMNS_DATATYPE.get(Dragon.DRAGON_COLUMNS.indexOf(field));
@@ -121,7 +123,7 @@ public class FilterParser {
                 try{
                     Integer.parseInt(value);
                 } catch (NumberFormatException ignored){
-                    throw new IllegalArgumentException(String.format("""
+                    throw new ValidationException(String.format("""
                             Invalid field value %s,
                             Type of value must be %s
                             """, value, datatype));
@@ -131,7 +133,7 @@ public class FilterParser {
                 try{
                     Float.parseFloat(value);
                 } catch (NumberFormatException ignored){
-                    throw new IllegalArgumentException(String.format("""
+                    throw new ValidationException(String.format("""
                             Invalid field value %s,
                             Type of value must be %s
                             """, value, datatype));

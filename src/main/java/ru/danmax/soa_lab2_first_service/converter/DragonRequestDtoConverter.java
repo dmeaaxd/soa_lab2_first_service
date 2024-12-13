@@ -9,7 +9,7 @@ import ru.danmax.soa_lab2_first_service.entity.enums.DragonCharacter;
 import ru.danmax.soa_lab2_first_service.entity.enums.DragonType;
 
 public class DragonRequestDtoConverter {
-    public Dragon convert(DragonRequestDto dragonRequestDto) {
+    public static Dragon convertToDragon(DragonRequestDto dragonRequestDto) {
         if (dragonRequestDto == null) return null;
         return Dragon.builder()
                 .name(dragonRequestDto.getName())

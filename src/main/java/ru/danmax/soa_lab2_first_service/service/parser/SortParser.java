@@ -1,5 +1,6 @@
 package ru.danmax.soa_lab2_first_service.service.parser;
 
+import jakarta.xml.bind.ValidationException;
 import ru.danmax.soa_lab2_first_service.entity.Dragon;
 
 import java.util.Arrays;
@@ -9,22 +10,22 @@ import java.util.regex.Pattern;
 public class SortParser {
     private static final String REGEX = "(\\w*):\\s*(\\w*)";
 
-    public static String parse(String sort) throws IllegalArgumentException {
+    public static String parse(String sort) throws ValidationException {
         validateExtraCharacter(sort);
         return parseSortSqlString(sort);
     }
 
-    private static void validateExtraCharacter(String sort) throws IllegalArgumentException {
+    private static void validateExtraCharacter(String sort) throws ValidationException {
         sort = sort
                 .replaceAll(REGEX, " ")
                 .replaceAll(",", " ")
                 .replaceAll(" ", "");
         if (!sort.isEmpty()){
-            throw new IllegalArgumentException("Extra characters in sort: " + sort);
+            throw new ValidationException("Extra characters in sort: " + sort);
         }
     }
 
-    private static String parseSortSqlString(String sort) throws IllegalArgumentException {
+    private static String parseSortSqlString(String sort) throws ValidationException {
         Pattern pattern = Pattern.compile(REGEX);
         Matcher matcher = pattern.matcher(sort);
 
@@ -35,14 +36,14 @@ public class SortParser {
             String direction = matcher.group(2);
 
             if (!Dragon.DRAGON_COLUMNS.contains(field)) {
-                throw new IllegalArgumentException(String.format("""
+                throw new ValidationException(String.format("""
                         Invalid sort field: %s
                         Acceptable fields: %s
                         """, field, Arrays.toString(Dragon.DRAGON_COLUMNS.toArray())));
             }
 
             if (!direction.equals("asc") && !direction.equals("desc")) {
-                throw new IllegalArgumentException(String.format("""
+                throw new ValidationException(String.format("""
                         Invalid sort direction: %s
                         """, direction));
             }

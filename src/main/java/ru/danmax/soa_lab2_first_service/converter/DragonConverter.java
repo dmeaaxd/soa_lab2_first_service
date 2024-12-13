@@ -4,7 +4,7 @@ import ru.danmax.soa_lab2_first_service.dto.response.DragonResponseDto;
 import ru.danmax.soa_lab2_first_service.entity.Dragon;
 
 public class DragonConverter {
-    public static DragonResponseDto convert(Dragon dragon) {
+    public static DragonResponseDto convertToDragonResponseDto(Dragon dragon) {
         if (dragon == null) return null;
         return DragonResponseDto.builder()
                 .id(dragon.getId())
@@ -21,7 +21,7 @@ public class DragonConverter {
                 .color(dragon.getColor())
                 .dragonType(dragon.getDragonType())
                 .dragonCharacter(dragon.getCharacter())
-                .killer(PersonConverter.convert(dragon.getKiller()))
+                .killer(PersonConverter.convertToPersonResponseDto(dragon.getKiller()))
                 .build();
     }
 }

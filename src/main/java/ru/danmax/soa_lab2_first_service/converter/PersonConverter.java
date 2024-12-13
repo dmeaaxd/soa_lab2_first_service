@@ -4,7 +4,7 @@ import ru.danmax.soa_lab2_first_service.dto.response.PersonResponseDto;
 import ru.danmax.soa_lab2_first_service.entity.Person;
 
 public class PersonConverter {
-    public static PersonResponseDto convert(Person person) {
+    public static PersonResponseDto convertToPersonResponseDto(Person person) {
         if (person == null) return null;
         return PersonResponseDto.builder()
                 .id(person.getId())
