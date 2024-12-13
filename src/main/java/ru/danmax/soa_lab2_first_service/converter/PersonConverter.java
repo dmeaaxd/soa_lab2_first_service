@@ -15,7 +15,7 @@ public class PersonConverter {
                                 .x(person.getLocation().getX())
                                 .y(person.getLocation().getY())
                                 .z(person.getLocation().getZ())
-                                .name(person.getLocation().getLocationName())
+                                .name(person.getLocation().getName())
                                 .build()
                 )
                 .build();

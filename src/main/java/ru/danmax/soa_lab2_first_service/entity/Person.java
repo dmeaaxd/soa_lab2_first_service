@@ -20,7 +20,7 @@ public class Person {
     @Column(nullable = false)
     private String name; //Поле не может быть null, Строка не может быть пустой
 
-    @Column(length = 32)
+    @Column(name = "passport_id", length = 32)
     private String passportId; //Длина строки должна быть не меньше 10, Длина строки не должна быть больше 32, Поле может быть null
 
     @Embedded

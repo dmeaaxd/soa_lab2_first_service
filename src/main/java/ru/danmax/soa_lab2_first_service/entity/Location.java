@@ -13,13 +13,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Location {
+    @Column(name = "location_x")
     private Integer x;
 
-    @Column(nullable = false)
+    @Column(name = "location_y", nullable = false)
     private Double y; //Поле не может быть null
 
+    @Column(name = "location_z")
     private Integer z;
 
-    @Column(nullable = false)
-    private String locationName; //Строка не может быть пустой, Поле не может быть null
+    @Column(name = "location_name", nullable = false)
+    private String name; //Строка не может быть пустой, Поле не может быть null
 }
