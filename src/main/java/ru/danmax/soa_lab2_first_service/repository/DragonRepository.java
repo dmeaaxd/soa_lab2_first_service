@@ -34,6 +34,22 @@ public class DragonRepository {
         }
     }
 
+    public void update(Dragon dragon) throws DatabaseException {
+        Session session = sessionManager.getSession();
+        try {
+            session.beginTransaction();
+            session.merge(dragon);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            throw new DatabaseException(e.getMessage());
+        } finally {
+            sessionManager.closeSession(session);
+        }
+    }
+
     public List<Dragon> findAll(String sort,
                                 String filter,
                                 Integer page,
@@ -88,13 +104,14 @@ public class DragonRepository {
     }
 
     public List<Dragon> findAllByNameSubstring(String name) throws DatabaseException {
+        name = name + "%";
         List<Dragon> dragons;
         Session session = sessionManager.getSession();
         try {
             session.beginTransaction();
             dragons = session
                     .createQuery("FROM Dragon WHERE name LIKE :name", Dragon.class)
-                    .setParameter("name",  "'" + name + "%'")
+                    .setParameter("name",  name)
                     .getResultList();
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -114,7 +131,7 @@ public class DragonRepository {
         try {
             session.beginTransaction();
             dragons = session
-                    .createQuery("FROM Dragon WHERE Dragon.killer.passportId < :passportId", Dragon.class)
+                    .createQuery("FROM Dragon WHERE killer.passportId < :passportId", Dragon.class)
                     .setParameter("passportId",  passportId)
                     .getResultList();
             session.getTransaction().commit();
@@ -149,7 +166,7 @@ public class DragonRepository {
 
         List<Dragon> result = new ArrayList<>();
         for (Dragon dragon : dragons) {
-            if (dragon.getCharacter().ordinal() > dragonCharacter.ordinal()){
+            if (dragon.getCharacter() != null && (dragon.getCharacter().ordinal() > dragonCharacter.ordinal())){
                 result.add(dragon);
             }
         }
@@ -164,7 +181,7 @@ public class DragonRepository {
         Session session = sessionManager.getSession();
         try {
             session.beginTransaction();
-            session.createQuery("DELETE FROM Dragon WHERE id = :id", Dragon.class)
+            session.createQuery("DELETE Dragon WHERE id = :id")
                     .setParameter("id", id)
                     .executeUpdate();
             session.getTransaction().commit();
@@ -177,8 +194,6 @@ public class DragonRepository {
             sessionManager.closeSession(session);
         }
     }
-
-
 
 
     private String createFindAllHqlQuery(String sort,

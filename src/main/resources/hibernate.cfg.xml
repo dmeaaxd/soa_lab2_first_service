@@ -9,7 +9,7 @@
         <property name="hibernate.generate_statistics">true</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
-        <property name="hibernate.hbm2ddl.auto">create</property>
+        <!-- <property name="hibernate.hbm2ddl.auto">create</property> -->
         <property name="hibernate.connection.charSet">UTF-8</property>
         <property name="hibernate.connection.characterEncoding">UTF-8</property>
         <property name="hibernate.connection.useUnicode">true</property>

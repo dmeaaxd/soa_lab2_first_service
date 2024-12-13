@@ -14,9 +14,11 @@ import ru.danmax.soa_lab2_first_service.converter.DragonRequestDtoConverter;
 import ru.danmax.soa_lab2_first_service.dto.request.DragonRequestDto;
 import ru.danmax.soa_lab2_first_service.dto.response.DragonResponseDto;
 import ru.danmax.soa_lab2_first_service.entity.Dragon;
+import ru.danmax.soa_lab2_first_service.entity.Person;
 import ru.danmax.soa_lab2_first_service.entity.enums.DragonCharacter;
 import ru.danmax.soa_lab2_first_service.exception.DatabaseException;
 import ru.danmax.soa_lab2_first_service.repository.DragonRepository;
+import ru.danmax.soa_lab2_first_service.repository.PersonRepository;
 import ru.danmax.soa_lab2_first_service.service.parser.FilterParser;
 import ru.danmax.soa_lab2_first_service.service.parser.SortParser;
 
@@ -29,6 +31,8 @@ public class DragonService {
 
     @Inject
     private DragonRepository dragonRepository;
+    @Inject
+    private PersonRepository personRepository;
 
     public List<DragonResponseDto> getDragons(
             String sort,
@@ -80,6 +84,14 @@ public class DragonService {
         Dragon dragon = DragonRequestDtoConverter.convertToDragon(dragonRequestDto);
 
         try {
+            if (dragon.getKiller() != null && dragon.getKiller().getId() != null) {
+                Person killer = personRepository.findById(dragon.getKiller().getId());
+                if (killer == null) {
+                    throw new NotFoundException("Killer not found");
+                }
+                dragon.setKiller(killer);
+            }
+
             dragonRepository.save(dragon);
         } catch (DatabaseException databaseException){
             throw new InternalServerErrorException(databaseException.getMessage());
@@ -120,8 +132,16 @@ public class DragonService {
                 throw new NotFoundException("Dragon not found");
             }
 
+            if (newDragon.getKiller() != null && newDragon.getKiller().getId() != null) {
+                Person killer = personRepository.findById(newDragon.getKiller().getId());
+                if (killer == null) {
+                    throw new NotFoundException("Killer not found");
+                }
+                newDragon.setKiller(killer);
+            }
+
             newDragon.setId(id);
-            dragonRepository.save(newDragon);
+            dragonRepository.update(newDragon);
         } catch (DatabaseException databaseException){
             throw new InternalServerErrorException(databaseException.getMessage());
         }
